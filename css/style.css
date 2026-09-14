@@ -1,17 +1,12 @@
-/* =========================================================
-   OneTap Computer Club — shared stylesheet
-   Team: [Team Member 1] & [Team Member 2]
-   ========================================================= */
-
 /* ---------- Design tokens ---------- */
 :root {
   --bg: #08080a;
   --bg-panel: #131316;
   --bg-card: #1a1a1f;
   --border: #2a2a31;
-  --accent: #ff3b52;       /* logo red — primary action color */
-  --accent-dim: #b4102c;   /* darker red, for borders/shadows */
-  --steel: #8a8a94;        /* secondary accent, used sparingly */
+  --accent: #ff3b52;       
+  --accent-dim: #b4102c;   
+  --steel: #8a8a94;        
   --text: #ffffff;
   --text-muted: #b8b8c0;
 
@@ -206,29 +201,17 @@ section:last-of-type {
   color: var(--accent);
 }
 
-/* ---------- Token graphic (CSS-drawn, no stock art) ---------- */
+/* ---------- Hero logo badge ---------- */
 .token {
   width: 100%;
+  max-width: 320px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.08), transparent 45%),
-    conic-gradient(from 220deg, var(--accent), var(--accent-dim), var(--bg-card), var(--accent));
+  object-fit: cover;
+  background-color: var(--bg-card);
   border: 6px solid var(--bg-panel);
-  box-shadow: 0 0 0 1px var(--border), inset 0 0 40px rgba(0,0,0,0.35);
-  position: relative;
-}
-
-.token::after {
-  content: "1T";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 3rem;
-  color: var(--text);
+  box-shadow: 0 0 0 1px var(--border), 0 0 50px rgba(255, 59, 82, 0.25);
+  margin: 0 auto;
 }
 
 /* ---------- Class selector: card ---------- */
