@@ -1,0 +1,481 @@
+/* =========================================================
+   OneTap Computer Club — shared stylesheet
+   Team: [Team Member 1] & [Team Member 2]
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #08080a;
+  --bg-panel: #131316;
+  --bg-card: #1a1a1f;
+  --border: #2a2a31;
+  --accent: #ff3b52;       /* logo red — primary action color */
+  --accent-dim: #b4102c;   /* darker red, for borders/shadows */
+  --steel: #8a8a94;        /* secondary accent, used sparingly */
+  --text: #ffffff;
+  --text-muted: #b8b8c0;
+
+  --font-display: "Anton", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.75rem;
+  --space-4: 3rem;
+  --space-5: 5rem;
+}
+
+/* ---------- Element selectors: global reset & base type ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  margin: 0 0 var(--space-2) 0;
+}
+
+h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h3 { font-size: 1.35rem; }
+
+p {
+  max-width: 62ch;
+  color: var(--text-muted);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul, ol {
+  color: var(--text-muted);
+  padding-left: 1.25rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ---------- Layout shell ---------- */
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+section {
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+/* ---------- ID selector: unique header ---------- */
+#main-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(16, 20, 28, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+#main-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 64px;
+  width: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* ---------- Class selector: nav menu ---------- */
+.nav-menu {
+  display: flex;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Descendant selector: links inside nav ---------- */
+.nav-menu a {
+  color: var(--text);
+  font-weight: 500;
+  padding: 0.3rem 0.1rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding-top: var(--space-5);
+}
+
+.hero .wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.hero .eyebrow {
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: var(--space-1);
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* ---------- Class selector: buttons ---------- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #ff5c70;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- Token graphic (CSS-drawn, no stock art) ---------- */
+.token {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.08), transparent 45%),
+    conic-gradient(from 220deg, var(--accent), var(--accent-dim), var(--bg-card), var(--accent));
+  border: 6px solid var(--bg-panel);
+  box-shadow: 0 0 0 1px var(--border), inset 0 0 40px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.token::after {
+  content: "1T";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--text);
+}
+
+/* ---------- Class selector: card ---------- */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.card h3 {
+  color: var(--accent);
+}
+
+/* ---------- Team / bio blocks ---------- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.team-member {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+/* ---------- Class selector: circular profile image ---------- */
+.profile-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---------- Table styling ---------- */
+.table-card {
+  overflow-x: auto;
+  margin-top: var(--space-3);
+}
+
+table th,
+table td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+table th {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  color: var(--steel);
+  font-weight: 400;
+  font-size: 1.05rem;
+}
+
+table tr:hover td {
+  background-color: var(--bg-panel);
+}
+
+/* ---------- Descendant selector: highlighted row ---------- */
+.table-card tr.highlight td {
+  color: var(--accent);
+}
+
+/* ---------- Price matrix: packages x zones ---------- */
+.price-matrix {
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+
+.price-matrix th,
+.price-matrix td {
+  border: none;
+  text-align: center;
+  padding: 1rem 1.2rem;
+}
+
+.price-matrix thead th {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  font-size: 1.3rem;
+  color: #ffffff;
+}
+
+.price-matrix .col-label {
+  text-align: left;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.price-matrix thead .col-label {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.price-matrix .time-note {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 0.2rem;
+}
+
+.price-matrix td {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Zone color coding, header vs body shade */
+.price-matrix thead .col-main   { background-color: var(--accent); }
+.price-matrix tbody .col-main   { background-color: #7a2412; color: #ffffff; }
+
+.price-matrix thead .col-vip    { background-color: #c99a2e; }
+.price-matrix tbody .col-vip    { background-color: #6b5313; color: #ffffff; }
+
+.price-matrix thead .col-bootcamp { background-color: #3d7ca6; }
+.price-matrix tbody .col-bootcamp { background-color: #1f3a52; color: #ffffff; }
+
+.price-matrix tbody tr:nth-child(even) td.col-main,
+.price-matrix tbody tr:nth-child(even) td.col-vip,
+.price-matrix tbody tr:nth-child(even) td.col-bootcamp {
+  filter: brightness(1.18);
+}
+
+.price-note {
+  margin-top: var(--space-3);
+}
+
+.price-note h3 {
+  margin-bottom: 0.4rem;
+}
+
+/* ---------- Forms ---------- */
+#contact-form {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.form-row {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-row label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row select,
+.form-row textarea {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.form-row textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--space-3);
+  color: var(--text);
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background-color: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  padding: var(--space-3) 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  .hero .wrap {
+    grid-template-columns: 1fr;
+  }
+
+  #main-header .wrap {
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-bottom: var(--space-2);
+  }
+
+  .nav-menu {
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  footer .wrap {
+    flex-direction: column;
+    text-align: center;
+  }
+}

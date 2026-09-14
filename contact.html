@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Assignment #1: HTML & CSS Basics | Team: [Team Member 1] & [Team Member 2] | Group: [Your Group] -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTap Computer Club — Contact &amp; Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header id="main-header">
+    <div class="wrap">
+      <a href="index.html" class="logo"><img src="images/Logo.png" alt="OneTap logo"></a>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <h1>Book your seat</h1>
+        <p>Tell us which zone you want and when — we'll confirm within the hour during staffed shifts.</p>
+        <img src="images/front-desk.jpg" alt="OneTap front desk where members check in">
+
+        <form id="contact-form" action="#" method="post">
+          <div class="form-row">
+            <label for="fullname">Full name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Your name" required>
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-row">
+            <label for="zone">Preferred zone</label>
+            <select id="zone" name="zone">
+              <option value="main">Main Zone</option>
+              <option value="vip">VIP Zone</option>
+              <option value="bootcamp">Bootcamp Zone</option>
+              <option value="tournament">Tournament Room</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <span>Visit time</span>
+            <div class="radio-group">
+              <label><input type="radio" name="visit-time" value="day" checked> Daytime</label>
+              <label><input type="radio" name="visit-time" value="night"> Night Pass</label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Anything the front desk should know?"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Send booking request</button>
+        </form>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Find us</h2>
+        <ul>
+          <li>Open daily, 9:00 AM – 2:00 AM</li>
+          <li>Astana, [your club address]</li>
+          <li>Instagram: @onetap.club</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov &amp; Alimzhan Tileshov</span>
+    </div>
+  </footer>
+
+</body>
+</html>
