@@ -374,9 +374,13 @@ table tr:hover td {
 .price-matrix thead .col-bootcamp { background-color: #3d7ca6; }
 .price-matrix tbody .col-bootcamp { background-color: #1f3a52; color: #ffffff; }
 
+.price-matrix thead .col-tournament { background-color: #8c6fd9; }
+.price-matrix tbody .col-tournament { background-color: #5f4b8b; color: #ffffff; }
+
 .price-matrix tbody tr:nth-child(even) td.col-main,
 .price-matrix tbody tr:nth-child(even) td.col-vip,
-.price-matrix tbody tr:nth-child(even) td.col-bootcamp {
+.price-matrix tbody tr:nth-child(even) td.col-bootcamp,
+.price-matrix tbody tr:nth-child(even) td.col-tournament {
   filter: brightness(1.18);
 }
 
@@ -448,6 +452,52 @@ table tr:hover td {
   color: var(--text);
 }
 
+.time-choice-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.time-choice {
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-choice.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.time-range {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.time-range label {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.time-range input[type="time"] {
+  width: 100%;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
 /* ---------- Footer ---------- */
 /* ---------- Snack bar menu (Grid) ---------- */
 .menu-grid {
@@ -470,7 +520,8 @@ table tr:hover td {
 .menu-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
   display: block;
   transition: transform 0.3s ease;
 }

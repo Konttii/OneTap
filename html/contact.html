@@ -30,7 +30,6 @@
       <div class="wrap">
         <h1>Book your seat</h1>
         <p>Tell us which zone you want and when — we'll confirm within the hour during staffed shifts.</p>
-        <img src="images/front-desk.jpg" alt="OneTap front desk where members check in">
 
         <form id="contact-form" action="#" method="post">
           <div class="form-row">
@@ -55,9 +54,19 @@
 
           <div class="form-row">
             <span>Visit time</span>
-            <div class="radio-group">
-              <label><input type="radio" name="visit-time" value="day" checked> Daytime</label>
-              <label><input type="radio" name="visit-time" value="night"> Night Pass</label>
+            <div class="time-choice-group" role="group" aria-label="Visit time options">
+              <button type="button" class="time-choice active" data-time="daytime">Daytime</button>
+              <button type="button" class="time-choice" data-time="night-pass">Night Pass</button>
+            </div>
+            <div class="time-range">
+              <div>
+                <label for="start-time">Start time</label>
+                <input type="time" id="start-time" name="start-time" value="12:00">
+              </div>
+              <div>
+                <label for="end-time">End time</label>
+                <input type="time" id="end-time" name="end-time" value="18:00">
+              </div>
             </div>
           </div>
 
@@ -89,6 +98,31 @@
       <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
     </div>
   </footer>
+
+  <script>
+    const timeButtons = document.querySelectorAll('.time-choice');
+    const startTimeInput = document.getElementById('start-time');
+    const endTimeInput = document.getElementById('end-time');
+
+    const setPresetTime = (type) => {
+      if (type === 'daytime') {
+        startTimeInput.value = '12:00';
+        endTimeInput.value = '18:00';
+      }
+
+      if (type === 'night-pass') {
+        startTimeInput.value = '23:00';
+        endTimeInput.value = '07:00';
+      }
+    };
+
+    timeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        timeButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+        setPresetTime(button.dataset.time);
+      });
+    });
+  </script>
 
 </body>
 </html>
