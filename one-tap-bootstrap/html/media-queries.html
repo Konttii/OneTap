@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task 2: Pure CSS Media Queries</title>
+  <!-- NO BOOTSTRAP LINKED HERE -->
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Task 2: Pure CSS Media Queries Grid */
+    .pure-css-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+    .pure-css-grid .card {
+      background: #1a1a1f;
+      border: 1px solid #2a2a31;
+      padding: 20px;
+      color: #fff;
+      flex: 1 1 100%; /* Mobile: stacked (1 per row) */
+    }
+    
+    /* Tablet: 2 boxes in a row */
+    @media (min-width: 768px) {
+      .pure-css-grid .card {
+        flex: 1 1 calc(50% - 20px);
+      }
+    }
+    
+    /* Desktop: all three side by side */
+    @media (min-width: 1024px) {
+      .pure-css-grid .card {
+        flex: 1 1 calc(33.333% - 20px);
+      }
+    }
+  </style>
+</head>
+<body style="background-color: #08080a; color: #fff;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <h1 style="text-align: center; margin-top: 50px;">Task 2: Pure CSS Grid</h1>
+    <p style="text-align: center; color: #b8b8c0;">Three cards in a row. Responsive purely via CSS Media Queries.</p>
+    
+    <div class="pure-css-grid">
+      <div class="card">
+        <h3>Card One</h3>
+        <p>This is a pure CSS card demonstrating responsive media queries.</p>
+      </div>
+      <div class="card">
+        <h3>Card Two</h3>
+        <p>On desktop, there are 3 side-by-side. On tablet, 2 in a row. On mobile, stacked vertically.</p>
+      </div>
+      <div class="card">
+        <h3>Card Three</h3>
+        <p>No Bootstrap is used on this page to fulfill Task 2 criteria.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
