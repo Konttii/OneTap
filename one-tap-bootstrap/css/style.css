@@ -4,7 +4,7 @@
   --bg: #08080a;
   --bg-panel: #131316;
   --bg-card: #1a1a1f;
-  --border: #1e1ed3;
+  --border: #ff3b52;
   --accent: #ff3b52;       /* logo red — primary action color */
   --accent-dim: #b4102c;   /* darker red, for borders/shadows */
   --steel: #8a8a94;        /* secondary accent, used sparingly */
@@ -204,11 +204,19 @@ section:last-of-type {
 
 .btn-primary {
   background-color: var(--accent);
+  border-color: var(--accent);
   color: #ffffff;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
   background-color: #ff5c70;
+  border-color: #ff5c70;
+  box-shadow: 0 0 0 0.25rem rgba(255, 59, 82, 0.25);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(255, 59, 82, 0.25);
 }
 
 .btn-outline {
