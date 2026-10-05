@@ -19,20 +19,20 @@
       border: 1px solid #2a2a31;
       padding: 20px;
       color: #fff;
-      flex: 1 1 100%; /* Mobile: stacked (1 per row) */
+      flex: 0 0 100%; /* Mobile: stacked (1 per row) */
     }
     
     /* Tablet: 2 boxes in a row */
     @media (min-width: 768px) {
       .pure-css-grid .card {
-        flex: 1 1 calc(50% - 20px);
+        flex: 0 0 calc(50% - 10px); /* 10px is half of the 20px gap */
       }
     }
     
     /* Desktop: all three side by side */
     @media (min-width: 1024px) {
       .pure-css-grid .card {
-        flex: 1 1 calc(33.333% - 20px);
+        flex: 0 0 calc(33.333% - 13.33px); /* Exact math for 20px gap */
       }
     }
   </style>
