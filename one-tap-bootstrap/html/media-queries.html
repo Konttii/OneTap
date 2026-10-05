@@ -4,58 +4,248 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task 2: Pure CSS Media Queries</title>
-  <!-- NO BOOTSTRAP LINKED HERE -->
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Подключаем базовые стили -->
   <link rel="stylesheet" href="../css/style.css">
+  
   <style>
-    /* Task 2: Pure CSS Media Queries Grid */
+    /* =========================================
+       Pure CSS Implementation (No Bootstrap)
+       ========================================= */
+    html, body {
+      background-color: #08080a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .pure-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* --- Navbar Pure CSS --- */
+    .pure-navbar {
+      background-color: rgba(16, 20, 28, 0.95);
+      border-bottom: 1px solid #1e1ed3; /* цвет границы из вашей темы */
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+    }
+
+    .pure-navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .pure-logo img {
+      height: 64px;
+      width: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .pure-nav-list {
+      display: flex;
+      gap: 15px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .pure-nav-list a {
+      color: #b8b8c0;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      transition: color 0.3s ease;
+    }
+
+    .pure-nav-list a:hover,
+    .pure-nav-list a.active {
+      color: #ff3b52;
+    }
+
+    /* --- Main Content --- */
+    .page-wrapper {
+      flex: 1; /* Прижимает футер к низу экрана */
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    h1.title {
+      text-align: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ff3b52, #b4102c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #8a8a94;
+      font-size: 1.1rem;
+      margin-bottom: 60px;
+    }
+
+    /* --- Grid --- */
     .pure-css-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-    }
-    .pure-css-grid .card {
-      background: #1a1a1f;
-      border: 1px solid #2a2a31;
-      padding: 20px;
-      color: #fff;
-      flex: 0 0 100%; /* Mobile: stacked (1 per row) */
+      gap: 24px;
     }
     
-    /* Tablet: 2 boxes in a row */
+    .pure-css-grid .custom-card {
+      background: rgba(26, 26, 31, 0.7);
+      border: 1px solid rgba(255, 59, 82, 0.15);
+      border-radius: 16px;
+      padding: 32px;
+      color: #fff;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      flex: 0 0 100%;
+      box-sizing: border-box;
+    }
+    
+    .pure-css-grid .custom-card:hover {
+      transform: translateY(-6px);
+      border-color: #ff3b52;
+      box-shadow: 0 15px 35px rgba(255, 59, 82, 0.15);
+    }
+    
+    .custom-card h3 {
+      font-family: 'Anton', sans-serif;
+      color: #ff3b52;
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+    
+    .custom-card p {
+      color: #b8b8c0;
+      line-height: 1.6;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* --- Footer Pure CSS --- */
+    .pure-footer {
+      background-color: #131316;
+      border-top: 1px solid #2a2a31;
+      padding: 24px 0;
+      margin-top: auto;
+    }
+
+    .pure-footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      color: #b8b8c0;
+      font-size: 0.95rem;
+      gap: 15px;
+    }
+
+    /* --- Responsive adjustments (Media Queries) --- */
+    @media (max-width: 767px) {
+      .pure-navbar-inner {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .pure-nav-list {
+        justify-content: center;
+      }
+      .pure-footer-inner {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+      h1.title {
+        font-size: 2.5rem;
+      }
+    }
+
     @media (min-width: 768px) {
-      .pure-css-grid .card {
-        flex: 0 0 calc(50% - 10px); /* 10px is half of the 20px gap */
+      .pure-css-grid .custom-card {
+        flex: 0 0 calc(50% - 12px);
       }
     }
     
-    /* Desktop: all three side by side */
     @media (min-width: 1024px) {
-      .pure-css-grid .card {
-        flex: 0 0 calc(33.333% - 13.33px); /* Exact math for 20px gap */
+      .pure-css-grid .custom-card {
+        flex: 0 0 calc(33.333% - 16px);
       }
     }
   </style>
 </head>
-<body style="background-color: #08080a; color: #fff;">
-  <div style="max-width: 1200px; margin: 0 auto;">
-    <h1 style="text-align: center; margin-top: 50px;">Task 2: Pure CSS Grid</h1>
-    <p style="text-align: center; color: #b8b8c0;">Three cards in a row. Responsive purely via CSS Media Queries.</p>
+<body>
+  
+  <!-- Pure CSS Navbar (No Bootstrap) -->
+  <nav class="pure-navbar">
+    <div class="pure-container pure-navbar-inner">
+      <a href="index.html" class="pure-logo"><img src="../images/Logo.png" alt="OneTap logo"></a>
+      <ul class="pure-nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="zones.html">Zones</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="media-queries.html" class="active">Media</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrapper">
+    <h1 class="title">Task 2: Pure CSS Grid</h1>
+    <p class="subtitle">Three cards in a row. Responsive purely via CSS Media Queries (No Bootstrap).</p>
     
     <div class="pure-css-grid">
-      <div class="card">
+      <div class="custom-card">
         <h3>Card One</h3>
-        <p>This is a pure CSS card demonstrating responsive media queries.</p>
+        <p>This is a pure CSS card demonstrating responsive media queries. It uses Flexbox to align content seamlessly across breakpoints.</p>
       </div>
-      <div class="card">
+      <div class="custom-card">
         <h3>Card Two</h3>
-        <p>On desktop, there are 3 side-by-side. On tablet, 2 in a row. On mobile, stacked vertically.</p>
+        <p>On desktop screens, there are 3 cards side-by-side. On tablet devices, it drops to 2 in a row. On mobile phones, they are stacked vertically.</p>
       </div>
-      <div class="card">
+      <div class="custom-card">
         <h3>Card Three</h3>
-        <p>No Bootstrap is used on this page to fulfill Task 2 criteria.</p>
+        <p>Zero Bootstrap classes are used on this page to fulfill Task 2 criteria. Everything here is powered by vanilla CSS3 properties.</p>
       </div>
     </div>
-  </div>
+  </main>
+
+  <!-- Pure CSS Footer (No Bootstrap) -->
+  <footer class="pure-footer">
+    <div class="pure-container pure-footer-inner">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+    </div>
+  </footer>
+
 </body>
 </html>
