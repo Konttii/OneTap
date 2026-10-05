@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task 2: Pure CSS Media Queries</title>
+  <title>Pure CSS Media Queries</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -91,10 +91,11 @@
       box-sizing: border-box;
     }
     
+    /* Responsive Typography Base (Desktop) */
     h1.title {
       text-align: center;
       font-family: 'Anton', sans-serif;
-      font-size: 4rem;
+      font-size: 4rem; /* Large font on desktop */
       letter-spacing: 2px;
       text-transform: uppercase;
       background: linear-gradient(90deg, #ff3b52, #b4102c);
@@ -107,7 +108,7 @@
     .subtitle {
       text-align: center;
       color: #8a8a94;
-      font-size: 1.1rem;
+      font-size: 1.2rem; /* Large font on desktop */
       margin-bottom: 60px;
     }
 
@@ -152,6 +153,14 @@
       margin: 0;
     }
 
+    .custom-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
     /* --- Footer Pure CSS --- */
     .pure-footer {
       background-color: #131316;
@@ -170,6 +179,17 @@
     }
 
     /* --- Responsive adjustments (Media Queries) --- */
+    /* Responsive Typography - Tablet */
+    @media (max-width: 1023px) {
+      h1.title {
+        font-size: 3rem; /* Medium font on tablet */
+      }
+      .subtitle {
+        font-size: 1.1rem; /* Medium font on tablet */
+      }
+    }
+
+    /* Mobile */
     @media (max-width: 767px) {
       .pure-navbar-inner {
         flex-direction: column;
@@ -183,8 +203,12 @@
         text-align: center;
         align-items: center;
       }
+      /* Responsive Typography - Mobile */
       h1.title {
-        font-size: 2.5rem;
+        font-size: 2rem; /* Small font on mobile */
+      }
+      .subtitle {
+        font-size: 0.9rem; /* Small font on mobile */
       }
     }
 
@@ -220,21 +244,24 @@
   </nav>
 
   <main class="page-wrapper">
-    <h1 class="title">Task 2: Pure CSS Grid</h1>
+    <h1 class="title">Pure CSS Grid</h1>
     <p class="subtitle">Three cards in a row. Responsive purely via CSS Media Queries (No Bootstrap).</p>
     
     <div class="pure-css-grid">
       <div class="custom-card">
-        <h3>Card One</h3>
-        <p>This is a pure CSS card demonstrating responsive media queries. It uses Flexbox to align content seamlessly across breakpoints.</p>
+        <img src="../images/Main.jpg" alt="Standart Zone">
+        <h3>Standart Zone</h3>
+        <p>Comfortable gaming environment for everyone with top-tier hardware. Perfect for solo or casual gaming with friends.</p>
       </div>
       <div class="custom-card">
-        <h3>Card Two</h3>
-        <p>On desktop screens, there are 3 cards side-by-side. On tablet devices, it drops to 2 in a row. On mobile phones, they are stacked vertically.</p>
+        <img src="../images/Vip.webp" alt="VIP Zone">
+        <h3>VIP Zone</h3>
+        <p>Premium gaming experience with exclusive perks, enhanced privacy, and the most powerful PCs available.</p>
       </div>
       <div class="custom-card">
-        <h3>Card Three</h3>
-        <p>Zero Bootstrap classes are used on this page to fulfill Task 2 criteria. Everything here is powered by vanilla CSS3 properties.</p>
+        <img src="../images/Bootcamp.jpg" alt="Bootcamp">
+        <h3>Bootcamp</h3>
+        <p>Professional setup for esports teams. Train and prepare for tournaments in a focused, high-performance environment.</p>
       </div>
     </div>
   </main>
