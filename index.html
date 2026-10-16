@@ -55,6 +55,24 @@
         .btn-bootstrap:hover {
             background: linear-gradient(135deg, #8b4bf9, #5e1cb7);
         }
+        footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.5rem;
+            padding: 0.9rem 1rem;
+            background: #131316;
+            border-top: 1px solid #2a2a31;
+            color: #b8b8c0;
+            font-size: 0.85rem;
+        }
+        .footer-datetime {
+            font-variant-numeric: tabular-nums;
+        }
     </style>
 </head>
 <body>
@@ -63,5 +81,13 @@
         <a href="html/index.html" class="btn">Оригинальный сайт</a>
         <a href="one-tap-bootstrap/html/index.html" class="btn btn-bootstrap">Версия с Bootstrap</a>
     </div>
+
+    <footer>
+        <span>&copy; 2026 OneTap Computer Club</span>
+        <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev &middot; Group: [Your Group]</span>
+        <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
