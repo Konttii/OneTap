@@ -127,15 +127,110 @@
         </ol>
       </div>
     </section>
+    <section id="faq" class="faq-section py-5">
+      <div class="container">
+        <h2>Frequently asked questions</h2>
+        <p>Quick answers before you book. Click a question to open or close its answer.</p>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3 class="faq-heading">
+              <button type="button" class="faq-question" id="faq-question-1" aria-expanded="false" aria-controls="faq-answer-1">
+                <span>How do I book a seat?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1">
+              <div class="faq-answer-inner">
+                <p>Open the Contact page, fill in the booking form with your preferred zone and visit time, and send the request. We confirm within the hour during staffed shifts.</p>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-heading">
+              <button type="button" class="faq-question" id="faq-question-2" aria-expanded="false" aria-controls="faq-answer-2">
+                <span>When is the club open?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2">
+              <div class="faq-answer-inner">
+                <p>OneTap is open 24/7 at Astana, Mangilik El 55/1 — day, night and tournament weekends.</p>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-heading">
+              <button type="button" class="faq-question" id="faq-question-3" aria-expanded="false" aria-controls="faq-answer-3">
+                <span>What is the difference between Daytime and Night Pass?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3">
+              <div class="faq-answer-inner">
+                <p>Daytime is a session from 12:00 to 18:00. Night Pass covers the late hours from 23:00 to 07:00. Both presets are available in the booking form and you can adjust the times.</p>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <h3 class="faq-heading">
+              <button type="button" class="faq-question" id="faq-question-4" aria-expanded="false" aria-controls="faq-answer-4">
+                <span>Which zone should I choose?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4">
+              <div class="faq-answer-inner">
+                <p>Main Zone suits everyday sessions, VIP Zone offers private booths, Bootcamp Zone is for players who train seriously, and the Tournament Room hosts the weekly brackets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="py-4 border-top border-secondary mt-auto bg-dark">
     <div class="container d-flex flex-wrap justify-content-between text-muted">
       <span>&copy; 2026 OneTap Computer Club</span>
-      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev &middot; Group: [Your Group]</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Floating tools: background switcher (Task 4) & subscribe button (Task 3) -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup (Task 3): hidden by default -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" required data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="email" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" required data-validate="email" data-label="Email">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+
 </body>
 </html>
