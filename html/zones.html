@@ -101,9 +101,44 @@
   <footer>
     <div class="wrap">
       <span>&copy; 2026 OneTap Computer Club</span>
-      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev &middot; Group: [Your Group]</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
     </div>
   </footer>
+
+  <!-- Floating tools: background switcher (Task 4) & subscribe button (Task 3) -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup (Task 3): hidden by default -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" required data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="email" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" required data-validate="email" data-label="Email">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
 
 </body>
 </html>
