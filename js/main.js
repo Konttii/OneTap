@@ -7,7 +7,8 @@
                                       showError(), clearError()
    Task 2  Accordion (FAQ) .......... initAccordion(), setAccordionItem()
    Task 3  Popup (Subscribe) ........ initPopup()
-   Task 4  Background colour ........ initBackgroundSwitcher(), applyBackground()
+   Task 4  Background colour ........ initBackgroundSwitcher(), applyBackground(),
+                                      ensureReadable()
    Task 5  Current date & time ...... initDateTime()
    ========================================================================== */
 (function () {
@@ -44,8 +45,11 @@
   }
 
   /* ======================================================================
-     Task 4 — Change background colour on button click
-     All shades are dark so the white page text always stays readable.
+     Task 4 — Change background colour with JavaScript
+     The 🎨 button opens a small panel: the user picks ANY colour with the
+     colour picker, or clicks a preset swatch / "Random" / "Reset".
+     Page text is white, so very bright picks are darkened automatically
+     (same hue) to keep the text readable.
      ====================================================================== */
   const BACKGROUND_PALETTE = [
     { name: 'Midnight Black', color: '#08080a' },
@@ -55,54 +59,177 @@
     { name: 'Crimson Dusk',   color: '#241016' },
     { name: 'Ocean Slate',    color: '#0e1d29' }
   ];
-  const BACKGROUND_STORAGE_KEY = 'onetap-background-index';
+  const DEFAULT_BACKGROUND = BACKGROUND_PALETTE[0].color;
+  const BACKGROUND_STORAGE_KEY = 'onetap-background-color';
+  const MAX_BACKGROUND_LUMINANCE = 0.07; // keeps muted grey text at >= 4.5:1 contrast
 
-  function applyBackground(index) {
-    const color = BACKGROUND_PALETTE[index].color;
-    document.body.style.backgroundColor = color;             // the property required by the task
-    document.documentElement.style.backgroundColor = color;  // keeps the canvas in sync
+  function hexToRgb(hex) {
+    const value = parseInt(hex.slice(1), 16);
+    return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+  }
+
+  function rgbToHex(rgb) {
+    return '#' + rgb.map(function (channel) {
+      return Math.round(channel).toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  // WCAG relative luminance, 0 (black) .. 1 (white)
+  function getLuminance(rgb) {
+    const linear = rgb.map(function (channel) {
+      const c = channel / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  }
+
+  // Returns { color, adjusted }: the colour itself, or a darker shade of it.
+  function ensureReadable(hex) {
+    const rgb = hexToRgb(hex);
+    if (getLuminance(rgb) <= MAX_BACKGROUND_LUMINANCE) {
+      return { color: hex, adjusted: false };
+    }
+    let low = 0;
+    let high = 1;
+    for (let i = 0; i < 12; i++) {
+      const mid = (low + high) / 2;
+      const scaled = rgb.map(function (channel) { return channel * mid; });
+      if (getLuminance(scaled) > MAX_BACKGROUND_LUMINANCE) {
+        high = mid;
+      } else {
+        low = mid;
+      }
+    }
+    return { color: rgbToHex(rgb.map(function (channel) { return channel * low; })), adjusted: true };
+  }
+
+  function applyBackground(color) {
+    document.body.style.backgroundColor = color;               // the property required by the task
+    document.documentElement.style.backgroundColor = color;    // keeps the canvas in sync
     document.documentElement.style.setProperty('--bg', color); // navbars that use var(--bg) follow too
   }
 
-  function readSavedBackgroundIndex() {
+  function readSavedBackground() {
     try {
-      const saved = parseInt(localStorage.getItem(BACKGROUND_STORAGE_KEY), 10);
-      return saved >= 0 && saved < BACKGROUND_PALETTE.length ? saved : null;
+      const saved = localStorage.getItem(BACKGROUND_STORAGE_KEY);
+      return /^#[0-9a-f]{6}$/i.test(saved) ? saved.toLowerCase() : null;
     } catch (error) {
       return null; // storage may be blocked (e.g. private mode)
     }
+  }
+
+  function saveBackground(color) {
+    try {
+      localStorage.setItem(BACKGROUND_STORAGE_KEY, color);
+    } catch (error) {
+      /* ignore: the colour simply will not persist */
+    }
+  }
+
+  function buildBackgroundPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'bg-panel';
+    panel.id = 'bg-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Background color');
+
+    const swatches = BACKGROUND_PALETTE.map(function (preset) {
+      return '<button type="button" class="bg-swatch" data-color="' + preset.color + '"' +
+             ' style="background-color:' + preset.color + '" title="' + preset.name + '"' +
+             ' aria-label="' + preset.name + '"></button>';
+    }).join('');
+
+    panel.innerHTML =
+      '<label class="bg-panel-title" for="bg-color-input">Background color</label>' +
+      '<input type="color" class="bg-color-input" id="bg-color-input" value="' + DEFAULT_BACKGROUND + '">' +
+      '<div class="bg-swatches">' + swatches + '</div>' +
+      '<div class="bg-actions">' +
+        '<button type="button" class="bg-action" id="bg-random">Random</button>' +
+        '<button type="button" class="bg-action" id="bg-reset">Reset</button>' +
+      '</div>' +
+      '<p class="bg-note" id="bg-note" role="status" hidden>Shade darkened a little so the text stays readable.</p>';
+    return panel;
   }
 
   function initBackgroundSwitcher() {
     const button = document.getElementById('bg-toggle');
     if (!button) return;
 
-    let index = readSavedBackgroundIndex();
-    if (index === null) {
-      index = 0;
-    } else {
-      applyBackground(index); // keep the chosen colour when moving between pages
+    const host = button.closest('.fab-group') || button.parentElement;
+    const panel = buildBackgroundPanel();
+    host.appendChild(panel);
+
+    const input = panel.querySelector('#bg-color-input');
+    const note = panel.querySelector('#bg-note');
+    const swatchButtons = panel.querySelectorAll('.bg-swatch');
+
+    function setColor(requested, save) {
+      const result = ensureReadable(requested.toLowerCase());
+      applyBackground(result.color);
+      input.value = result.color;
+      note.hidden = !result.adjusted;
+      swatchButtons.forEach(function (swatch) {
+        swatch.classList.toggle('is-active', swatch.dataset.color === result.color);
+      });
+      button.style.setProperty('--picked', result.color);
+      if (save) saveBackground(result.color);
     }
 
-    function updateButtonLabel() {
-      const next = BACKGROUND_PALETTE[(index + 1) % BACKGROUND_PALETTE.length].name;
-      const label = 'Change background color (now: ' + BACKGROUND_PALETTE[index].name + ', next: ' + next + ')';
-      button.setAttribute('aria-label', label);
-      button.setAttribute('title', label);
+    function openPanel() {
+      panel.classList.add('is-open');
+      button.setAttribute('aria-expanded', 'true');
     }
+
+    function closePanel() {
+      panel.classList.remove('is-open');
+      button.setAttribute('aria-expanded', 'false');
+    }
+
+    button.setAttribute('aria-label', 'Choose background color');
+    button.setAttribute('title', 'Choose background color');
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-controls', 'bg-panel');
+    button.setAttribute('aria-expanded', 'false');
+
+    const saved = readSavedBackground();
+    if (saved) setColor(saved, false); // keep the chosen colour when moving between pages
+    else setColor(DEFAULT_BACKGROUND, false);
 
     button.addEventListener('click', function () {
-      index = (index + 1) % BACKGROUND_PALETTE.length;
-      applyBackground(index);
-      updateButtonLabel();
-      try {
-        localStorage.setItem(BACKGROUND_STORAGE_KEY, String(index));
-      } catch (error) {
-        /* ignore: colour simply will not persist */
-      }
+      if (panel.classList.contains('is-open')) closePanel();
+      else openPanel();
     });
 
-    updateButtonLabel();
+    // live preview while dragging inside the native colour picker
+    input.addEventListener('input', function () {
+      setColor(input.value, true);
+    });
+
+    swatchButtons.forEach(function (swatch) {
+      swatch.addEventListener('click', function () {
+        setColor(swatch.dataset.color, true);
+      });
+    });
+
+    panel.querySelector('#bg-random').addEventListener('click', function () {
+      const randomRgb = [0, 0, 0].map(function () { return Math.floor(Math.random() * 256); });
+      setColor(rgbToHex(randomRgb), true);
+    });
+
+    panel.querySelector('#bg-reset').addEventListener('click', function () {
+      setColor(DEFAULT_BACKGROUND, true);
+    });
+
+    // close when clicking elsewhere or pressing Escape
+    document.addEventListener('click', function (event) {
+      if (panel.classList.contains('is-open') && !host.contains(event.target)) closePanel();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && panel.classList.contains('is-open')) {
+        closePanel();
+        button.focus();
+      }
+    });
   }
 
   /* ======================================================================
