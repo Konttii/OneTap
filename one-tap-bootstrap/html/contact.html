@@ -54,15 +54,26 @@
             <h1 class="mb-3 text-center">Book your seat</h1>
             <p class="text-muted text-center mb-5">Tell us which zone you want and when — we'll confirm within the hour during staffed shifts.</p>
 
-            <form id="contact-form" action="#" method="post" class="bg-dark p-4 p-md-5 border border-secondary rounded shadow-sm">
+            <form id="contact-form" action="#" method="post" class="bg-dark p-4 p-md-5 border border-secondary rounded shadow-sm" novalidate>
               <div class="mb-3">
                 <label for="fullname" class="form-label text-muted">Full name</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Your name" required>
+                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Your name" autocomplete="name" required data-validate="name" data-label="Full name">
               </div>
 
               <div class="mb-3">
                 <label for="email" class="form-label text-muted">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" autocomplete="email" required data-validate="email" data-label="Email">
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label text-muted">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required data-validate="password" data-label="Password">
+                <small class="field-hint d-block mt-1">Create a password to manage your bookings (minimum 8 characters).</small>
+              </div>
+
+              <div class="mb-3">
+                <label for="confirm-password" class="form-label text-muted">Confirm password</label>
+                <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Repeat your password" autocomplete="new-password" required data-validate="confirm" data-match="password" data-label="Password confirmation">
               </div>
 
               <div class="mb-3">
@@ -87,9 +98,9 @@
 
                 <div class="input-group">
                   <span class="input-group-text bg-transparent text-muted border-secondary">Start time</span>
-                  <input type="time" class="form-control" id="start-time" name="start-time" value="12:00">
+                  <input type="time" class="form-control" id="start-time" name="start-time" value="12:00" required data-label="Start time">
                   <span class="input-group-text bg-transparent text-muted border-secondary">End time</span>
-                  <input type="time" class="form-control" id="end-time" name="end-time" value="18:00">
+                  <input type="time" class="form-control" id="end-time" name="end-time" value="18:00" required data-label="End time">
                 </div>
               </div>
 
@@ -101,7 +112,7 @@
               <button type="submit" class="btn btn-primary w-100 btn-lg">Send booking request</button>
             </form>
           </div>
-d        </div>
+        </div>
       </div>
     </section>
 
@@ -120,7 +131,8 @@ d        </div>
   <footer class="py-4 border-top border-secondary mt-auto bg-dark">
     <div class="container d-flex flex-wrap justify-content-between text-muted">
       <span>&copy; 2026 OneTap Computer Club</span>
-      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev &middot; Group: [Your Group]</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
     </div>
   </footer>
 
@@ -145,5 +157,39 @@ d        </div>
       }
     });
   </script>
+  <!-- Floating tools: background switcher (Task 4) & subscribe button (Task 3) -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup (Task 3): hidden by default -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" required data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="email" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" required data-validate="email" data-label="Email">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+
 </body>
 </html>
