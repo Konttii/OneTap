@@ -111,30 +111,6 @@
     </div>
   </footer>
 
-  <script>
-    const timeButtons = document.querySelectorAll('.time-choice');
-    const startTimeInput = document.getElementById('start-time');
-    const endTimeInput = document.getElementById('end-time');
-
-    const setPresetTime = (type) => {
-      if (type === 'daytime') {
-        startTimeInput.value = '12:00';
-        endTimeInput.value = '18:00';
-      }
-
-      if (type === 'night-pass') {
-        startTimeInput.value = '23:00';
-        endTimeInput.value = '07:00';
-      }
-    };
-
-    timeButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        timeButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
-        setPresetTime(button.dataset.time);
-      });
-    });
-  </script>
 
   <!-- Floating tools: background switcher (Task 4) & subscribe button (Task 3) -->
   <div class="fab-group">

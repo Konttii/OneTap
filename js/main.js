@@ -454,6 +454,40 @@
     return { reset: reset };
   }
 
+  /* Visit time presets (moved here from the inline <script> in contact.html).
+     Works with the buttons of the plain version and the radios of the Bootstrap one. */
+  const TIME_PRESETS = {
+    daytime: { start: '12:00', end: '18:00' },
+    nightpass: { start: '23:00', end: '07:00' }
+  };
+
+  function initTimePresets() {
+    const startInput = document.getElementById('start-time');
+    const endInput = document.getElementById('end-time');
+    if (!startInput || !endInput) return;
+
+    function applyPreset(name) {
+      const preset = TIME_PRESETS[name.replace('-', '')];
+      if (!preset) return;
+      startInput.value = preset.start;
+      endInput.value = preset.end;
+    }
+
+    const buttons = document.querySelectorAll('.time-choice');
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        buttons.forEach(function (btn) { btn.classList.toggle('active', btn === button); });
+        applyPreset(button.dataset.time);
+      });
+    });
+
+    document.querySelectorAll('input[name="visit-time"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (radio.checked) applyPreset(radio.value);
+      });
+    });
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
@@ -556,6 +590,7 @@
     initDateTime();
     initBackgroundSwitcher();
     initAccordion();
+    initTimePresets();
     initContactForm();
     initPopup();
   }

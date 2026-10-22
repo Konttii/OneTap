@@ -1322,3 +1322,37 @@ body.popup-open {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Page styles moved out of inline <style> / style="" (Assignment 5) ---------- */
+/* Ensure carousel images fit well */
+.carousel-item img {
+  max-height: 400px;
+  object-fit: contain;
+  background-color: #fff; /* matching original .menu-item img */
+}
+.carousel-caption {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  border-radius: 0 0 0.5rem 0.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 2rem;
+}
+
+/* form overrides to match dark theme */
+.form-control, .form-select, .input-group-text {
+  background-color: var(--bg-panel);
+  color: var(--text);
+  border-color: var(--border);
+}
+.form-control:focus, .form-select:focus {
+  background-color: var(--bg-panel);
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(255, 59, 82, 0.25);
+}
+
+.zone-img {
+  object-fit: cover;
+  max-height: 280px;
+}
