@@ -1292,3 +1292,49 @@ body.popup-open {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Assignment 5: Day / Night theme ---------- */
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body.day-theme {
+  --bg: #f4f5f9;
+  --bg-panel: #ffffff;
+  --bg-card: #ffffff;
+  --border: #d5d8e2;
+  --text: #14161e;
+  --text-muted: #4a4f62;
+  --bs-body-color: #14161e;
+  --bs-heading-color: #14161e;
+  background-color: var(--bg) !important;
+  color: var(--text);
+}
+
+html:has(body.day-theme) {
+  background-color: #f4f5f9 !important;
+}
+
+body.day-theme #main-header,
+body.day-theme .navbar-custom {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+body.day-theme .bg-dark {
+  background-color: var(--bg-panel) !important;
+}
+
+body.day-theme .text-white,
+body.day-theme .navbar-nav .nav-link {
+  color: var(--text) !important;
+}
+
+.fab-daynight {
+  width: 48px;
+  padding: 0;
+  font-size: 1.2rem;
+}
+
+.fab-daynight:active {
+  transform: rotate(180deg);
+}

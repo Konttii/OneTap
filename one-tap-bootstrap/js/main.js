@@ -585,10 +585,117 @@
     });
   }
 
+  /* ======================================================================
+     Assignment 5 — Sound effects (Web Audio API, no audio files needed)
+     The previous sound is stopped before a new one starts, so they never overlap.
+     ====================================================================== */
+  let audioContext = null;
+  let currentSound = null;
+
+  function playSound(type) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    if (!audioContext) audioContext = new AudioCtx();
+
+    if (currentSound) {
+      try { currentSound.stop(); } catch (error) { /* already finished */ }
+    }
+
+    let frequency;
+    switch (type) {
+      case 'success': frequency = 880; break;
+      case 'error':   frequency = 220; break;
+      default:        frequency = 520; // 'click'
+    }
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.2);
+    currentSound = oscillator;
+  }
+
+  /* ======================================================================
+     Assignment 5 — Day / Night theme switch (dynamic style change)
+     The ☀️/🌙 button is created by JS inside the floating .fab-group.
+     ====================================================================== */
+  const THEME_STORAGE_KEY = 'onetap-theme';
+
+  function initThemeToggle() {
+    const group = document.querySelector('.fab-group');
+    if (!group) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'fab fab-daynight';
+    group.prepend(button);
+
+    function setTheme(theme) {
+      const isDay = theme === 'day';
+      document.body.classList.toggle('day-theme', isDay);
+      button.textContent = isDay ? '🌙' : '☀️';
+      button.setAttribute('aria-label', isDay ? 'Switch to night theme' : 'Switch to day theme');
+      button.title = button.getAttribute('aria-label');
+    }
+
+    let saved = null;
+    try { saved = localStorage.getItem(THEME_STORAGE_KEY); } catch (error) { /* ignore */ }
+    setTheme(saved === 'day' ? 'day' : 'night');
+
+    button.addEventListener('click', function () {
+      const next = document.body.classList.contains('day-theme') ? 'night' : 'day';
+      setTheme(next);
+      playSound('click');
+      try { localStorage.setItem(THEME_STORAGE_KEY, next); } catch (error) { /* ignore */ }
+    });
+  }
+
+  /* ======================================================================
+     Assignment 5 — Keyboard navigation in the main menu (keydown + focus())
+     ← / → (and ↑ / ↓) move between the menu links, Home / End jump to the edges.
+     ====================================================================== */
+  function initKeyboardNav() {
+    const links = Array.from(document.querySelectorAll('.nav-menu a, .navbar-nav .nav-link'));
+    if (!links.length) return;
+
+    links.forEach(function (link, index) {
+      link.addEventListener('keydown', function (event) {
+        let next = null;
+        switch (event.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+            next = (index + 1) % links.length;
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            next = (index - 1 + links.length) % links.length;
+            break;
+          case 'Home':
+            next = 0;
+            break;
+          case 'End':
+            next = links.length - 1;
+            break;
+          default:
+            return;
+        }
+        event.preventDefault();
+        links[next].focus();
+      });
+    });
+  }
+
   /* ---------- Boot ---------- */
   function init() {
     initDateTime();
     initBackgroundSwitcher();
+    initThemeToggle();
+    initKeyboardNav();
     initAccordion();
     initTimePresets();
     initContactForm();
