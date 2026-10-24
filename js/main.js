@@ -690,12 +690,48 @@
     });
   }
 
+  /* ======================================================================
+     Assignment 5 — Rating stars (querySelectorAll + attributes + animation)
+     ====================================================================== */
+  const RATING_STORAGE_KEY = 'onetap-rating';
+  const RATING_MESSAGES = ['', 'Sorry to hear that 😕', 'We will do better!', 'Not bad, thanks!', 'Great, glad you liked it!', 'Awesome — see you soon! 🔥'];
+
+  function initRating() {
+    const stars = document.querySelectorAll('#rating-stars .star');
+    const result = document.getElementById('rating-result');
+    if (!stars.length || !result) return;
+
+    function showRating(value) {
+      // classic for loop: light up every star up to the chosen one
+      for (let i = 0; i < stars.length; i++) {
+        const isOn = i < value;
+        stars[i].classList.toggle('is-active', isOn);
+        stars[i].setAttribute('aria-pressed', String(isOn));
+      }
+      result.textContent = value ? 'Your rating: ' + value + '/5 — ' + RATING_MESSAGES[value] : 'No rating yet.';
+    }
+
+    stars.forEach(function (star) {
+      star.addEventListener('click', function () {
+        const value = Number(star.dataset.value);
+        showRating(value);
+        playSound(value >= 3 ? 'success' : 'error');
+        try { localStorage.setItem(RATING_STORAGE_KEY, value); } catch (error) { /* ignore */ }
+      });
+    });
+
+    let saved = 0;
+    try { saved = Number(localStorage.getItem(RATING_STORAGE_KEY)) || 0; } catch (error) { /* ignore */ }
+    showRating(saved);
+  }
+
   /* ---------- Boot ---------- */
   function init() {
     initDateTime();
     initBackgroundSwitcher();
     initThemeToggle();
     initKeyboardNav();
+    initRating();
     initAccordion();
     initTimePresets();
     initContactForm();

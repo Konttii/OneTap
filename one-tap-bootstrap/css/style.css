@@ -1402,3 +1402,37 @@ body.day-theme .navbar-nav .nav-link {
 .fab-daynight:active {
   transform: rotate(180deg);
 }
+
+/* ---------- Assignment 5: rating stars ---------- */
+.rating-section {
+  padding: var(--space-4) 0;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.star {
+  border: 0;
+  background: none;
+  color: var(--steel);
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.star:hover {
+  transform: scale(1.2);
+}
+
+.star.is-active {
+  color: #ffc107;
+  transform: scale(1.1);
+}
+
+.rating-result {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+}
