@@ -725,6 +725,93 @@
     showRating(saved);
   }
 
+  /* ======================================================================
+     Assignment 5 — Menu filter
+     Objects & methods, arrays & loops (for / while), higher-order functions
+     (map / filter / forEach) and a switch statement for the filter type.
+     ====================================================================== */
+  const menu = {
+    budgetLimit: 600,
+    items: [
+      { name: 'Cola',      category: 'drinks', price: 800 },
+      { name: 'Gorilla',   category: 'drinks', price: 650 },
+      { name: 'Asu',       category: 'drinks', price: 400 },
+      { name: 'Buerger',   category: 'food',   price: 700 },
+      { name: 'Romanov',   category: 'food',   price: 800 },
+      { name: 'Maxi',      category: 'snacks', price: 600 },
+      { name: 'Eclipse',   category: 'snacks', price: 400 },
+      { name: 'Lays',      category: 'snacks', price: 1000 },
+      { name: 'Batonchik', category: 'snacks', price: 600 }
+    ],
+
+    filterBy: function (filter) {
+      const limit = this.budgetLimit;
+      switch (filter) {
+        case 'drinks':
+        case 'food':
+        case 'snacks':
+          return this.items.filter(function (item) { return item.category === filter; });
+        case 'budget':
+          return this.items.filter(function (item) { return item.price <= limit; });
+        case 'all':
+        default:
+          return this.items.slice();
+      }
+    },
+
+    averagePrice: function (list) {
+      if (!list.length) return 0;
+      let sum = 0;
+      for (let i = 0; i < list.length; i++) {
+        sum += list[i].price;
+      }
+      return Math.round(sum / list.length);
+    },
+
+    // how many of the cheapest items fit into a given budget (while loop)
+    itemsForBudget: function (budget) {
+      const prices = this.items.map(function (item) { return item.price; }).sort(function (a, b) { return a - b; });
+      let count = 0;
+      let spent = 0;
+      while (count < prices.length && spent + prices[count] <= budget) {
+        spent += prices[count];
+        count++;
+      }
+      return count;
+    }
+  };
+
+  function initMenuFilter() {
+    const buttons = document.querySelectorAll('#menu-filter .filter-btn');
+    const list = document.getElementById('price-list');
+    const summary = document.getElementById('menu-summary');
+    if (!buttons.length || !list) return;
+
+    function render(filter) {
+      const items = menu.filterBy(filter);
+      list.innerHTML = items.map(function (item) {
+        return '<li class="price-item"><span>' + item.name + '</span><span>' + item.price + ' &#8376;</span></li>';
+      }).join('');
+
+      summary.textContent = items.length + ' item(s), average price ' + menu.averagePrice(items) +
+        ' ₸. With 2000 ₸ you can grab up to ' + menu.itemsForBudget(2000) + ' of the cheapest snacks.';
+
+      // small fade-in animation: force a reflow, then add the class so the CSS transition runs
+      void list.offsetWidth;
+      list.querySelectorAll('.price-item').forEach(function (li) { li.classList.add('is-visible'); });
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        buttons.forEach(function (btn) { btn.classList.toggle('is-active', btn === button); });
+        playSound('click');
+        render(button.dataset.filter);
+      });
+    });
+
+    render('all');
+  }
+
   /* ---------- Boot ---------- */
   function init() {
     initDateTime();
@@ -732,6 +819,7 @@
     initThemeToggle();
     initKeyboardNav();
     initRating();
+    initMenuFilter();
     initAccordion();
     initTimePresets();
     initContactForm();

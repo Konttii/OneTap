@@ -1372,3 +1372,59 @@ body.day-theme .navbar-nav .nav-link {
   margin-top: var(--space-1);
   color: var(--text-muted);
 }
+
+/* ---------- Assignment 5: menu filter & price list ---------- */
+.price-list-section {
+  padding: var(--space-4) 0;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: var(--space-2);
+}
+
+.filter-btn {
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--bg-card);
+  color: var(--text);
+  font: 600 0.9rem var(--font-body);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.is-active {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.menu-summary {
+  color: var(--text-muted);
+}
+
+.price-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 480px;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.price-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
