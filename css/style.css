@@ -1428,3 +1428,10 @@ body.day-theme .navbar-nav .nav-link {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ---------- Assignment 5: async form error message ---------- */
+.form-success.is-error {
+  border-color: var(--accent);
+  background-color: rgba(255, 59, 82, 0.12);
+  color: #ff8a98;
+}

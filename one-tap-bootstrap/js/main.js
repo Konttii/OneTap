@@ -10,6 +10,14 @@
    Task 4  Background colour ........ initBackgroundSwitcher(), applyBackground(),
                                       ensureReadable()
    Task 5  Current date & time ...... initDateTime()
+
+   Assignment #5 — Advanced JavaScript & DOM Manipulation
+   Day / Night theme ................ initThemeToggle()
+   Keyboard menu navigation ......... initKeyboardNav()
+   Rating stars ..................... initRating()
+   Menu filter (switch, objects) .... menu, initMenuFilter()
+   Async form + callback, Clear ..... sendBooking(), initContactForm()
+   Sound effects .................... playSound()
    ========================================================================== */
 (function () {
   'use strict';
@@ -355,10 +363,11 @@
     if (success) success.remove();
   }
 
-  function showSuccessMessage(form, text) {
+  function showSuccessMessage(form, text, isError) {
     removeSuccessMessage(form);
     const success = document.createElement('div');
     success.className = 'form-success';
+    if (isError) success.classList.add('is-error');
     success.setAttribute('role', 'status');
     success.textContent = text;
 
@@ -375,6 +384,7 @@
    * options.successMessage  text shown after a valid submit
    * options.onSuccess       callback after a valid submit
    * options.onReset         callback after the form has been reset
+   * options.sendData        optional async sender: sendData(form, callback(ok, message))
    * Returns { reset() } which clears values, errors and messages.
    */
   function setupFormValidation(form, options) {
@@ -446,6 +456,16 @@
         return;
       }
 
+      // Assignment 5: async submit — sendData() calls back when the request is finished
+      if (typeof settings.sendData === 'function') {
+        settings.sendData(form, function (ok, message) {
+          if (ok) reset();
+          showSuccessMessage(form, message, !ok);
+          playSound(ok ? 'success' : 'error');
+        });
+        return;
+      }
+
       reset();
       showSuccessMessage(form, settings.successMessage || 'Thank you! Your form has been submitted.');
       if (typeof settings.onSuccess === 'function') settings.onSuccess(form);
@@ -488,18 +508,65 @@
     });
   }
 
+  // Assignment 5: sends the booking with fetch (POST) and reports back through a callback
+  const BOOKING_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+  function sendBooking(form, callback) {
+    const submit = form.querySelector('[type="submit"]');
+    const data = Object.fromEntries(new FormData(form));
+    delete data.password;
+    delete data['confirm-password'];
+
+    submit.disabled = true;
+    submit.textContent = 'Sending…';
+
+    fetch(BOOKING_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      })
+      .then(function (result) {
+        callback(true, 'Thank you, ' + data.fullname + '! Booking #' + result.id + ' was sent. We will confirm it shortly.');
+      })
+      .catch(function () {
+        callback(false, 'Could not send the request. Check your internet connection and try again.');
+      })
+      .finally(function () {
+        submit.disabled = false;
+        submit.textContent = 'Send booking request';
+      });
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
 
     setupFormValidation(form, {
-      successMessage: 'Thank you! Your booking request has been sent. We will confirm it shortly.',
+      sendData: sendBooking,
       // form.reset() restores the default times; re-sync the preset button state too.
       onReset: function () {
         const daytime = form.querySelector('.time-choice[data-time="daytime"]');
         if (daytime) daytime.click();
       }
     });
+
+    // Assignment 5: "Clear" button empties all text inputs with querySelectorAll + forEach
+    const clearBtn = document.getElementById('clear-form');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        form.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], textarea').forEach(function (field) {
+          field.value = '';
+          delete field.dataset.touched;
+          clearError(field);
+        });
+        removeSuccessMessage(form);
+        playSound('click');
+      });
+    }
   }
 
   /* ======================================================================
