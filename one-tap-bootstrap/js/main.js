@@ -18,6 +18,12 @@
    Menu filter (switch, objects) .... menu, initMenuFilter()
    Async form + callback, Clear ..... sendBooking(), initContactForm()
    Sound effects .................... playSound()
+
+   Assignment #6 — jQuery (DOM, Events, Search & UX)
+   Task 0  jQuery ready check ....... $(document).ready()
+   Task 1  Real-time search/filter .. initMenuSearch(), initFaqSearch()
+   Task 2  Autocomplete suggestions . renderSuggestions()
+   Task 3  Search highlighting ...... highlightMatches() (.html, regex, .wrap)
    ========================================================================== */
 (function () {
   'use strict';
@@ -877,6 +883,280 @@
     });
 
     render('all');
+  }
+
+  /* ======================================================================
+     Assignment 6 — Part 1: jQuery Search
+     Task 1: Real-time Search and Live Filter (.on('keyup'), .filter())
+     Task 2: Autocomplete Search Suggestions (dropdown list as user types)
+     Task 3: Search Highlighting (.html(), regex, .wrap())
+     ====================================================================== */
+  function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Task 3: Highlights matching words inside $elements using .html(), regex, and .wrap()
+  function highlightMatches($elements, query) {
+    let matchCount = 0;
+    const trimmed = $.trim(query);
+    const regex = trimmed ? new RegExp('(' + escapeRegExp(trimmed) + ')', 'gi') : null;
+
+    $elements.each(function () {
+      const $el = $(this);
+      if ($el.data('original-text') === undefined) {
+        $el.data('original-text', $el.text());
+      }
+      const rawText = $el.data('original-text');
+      const safeHtml = $('<div>').text(rawText).html();
+
+      if (!regex) {
+        $el.html(safeHtml);
+        return;
+      }
+
+      const replaced = safeHtml.replace(regex, function (match) {
+        matchCount++;
+        return '<span class="hl-word">' + match + '</span>';
+      });
+      $el.html(replaced);
+      $el.find('.hl-word').wrap('<mark class="search-highlight"></mark>');
+    });
+
+    return matchCount;
+  }
+
+  // Task 2: Renders autocomplete dropdown suggestions and handles selection
+  function renderSuggestions($list, items, query, onSelect) {
+    const q = $.trim(query).toLowerCase();
+    if (!q) {
+      $list.empty().attr('hidden', true);
+      return;
+    }
+
+    const matches = $.grep(items, function (entry) {
+      return entry.label.toLowerCase().indexOf(q) !== -1 ||
+             (entry.tag && entry.tag.toLowerCase().indexOf(q) !== -1);
+    }).slice(0, 6);
+
+    if (!matches.length) {
+      $list.empty().attr('hidden', true);
+      return;
+    }
+
+    const html = $.map(matches, function (entry) {
+      return '<li class="autocomplete-item" role="option" data-value="' +
+        $('<div>').text(entry.value).html() + '">' +
+        '<span>' + $('<div>').text(entry.label).html() + '</span>' +
+        (entry.tag ? '<span class="autocomplete-tag">' + $('<div>').text(entry.tag).html() + '</span>' : '') +
+        '</li>';
+    }).join('');
+
+    $list.html(html).removeAttr('hidden');
+
+    $list.off('click.autocomplete').on('click.autocomplete', '.autocomplete-item', function () {
+      const chosen = $(this).attr('data-value');
+      $list.empty().attr('hidden', true);
+      onSelect(chosen);
+    });
+  }
+
+  // Tasks 1, 2 & 3 on Menu page (menu.html)
+  function initMenuSearch() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $input = $('#menu-search');
+    if (!$input.length) return;
+
+    const $clear = $('#menu-search-clear');
+    const $suggestions = $('#menu-suggestions');
+    const $status = $('#menu-search-status');
+
+    const suggestionPool = [
+      { label: 'Cola — 800 ₸',      value: 'Cola',      tag: 'Drinks' },
+      { label: 'Gorilla — 650 ₸',   value: 'Gorilla',   tag: 'Drinks' },
+      { label: 'Asu — 400 ₸',       value: 'Asu',       tag: 'Drinks' },
+      { label: 'Maxi — 600 ₸',      value: 'Maxi',      tag: 'Snacks' },
+      { label: 'Buerger — 700 ₸',   value: 'Buerger',   tag: 'Food' },
+      { label: 'Romanov — 800 ₸',   value: 'Romanov',   tag: 'Food' },
+      { label: 'Eclipse — 400 ₸',   value: 'Eclipse',   tag: 'Snacks' },
+      { label: 'Lays — 1000 ₸',     value: 'Lays',      tag: 'Snacks' },
+      { label: 'Batonchik — 600 ₸', value: 'Batonchik', tag: 'Snacks' },
+      { label: 'All Drinks',        value: 'Drinks',    tag: 'Category' },
+      { label: 'All Snacks',        value: 'Snacks',    tag: 'Category' }
+    ];
+
+    function applyMenuSearch(showAutocomplete) {
+      const query = $.trim($input.val());
+      const lower = query.toLowerCase();
+
+      if ( query ) {
+        $clear.removeAttr('hidden');
+      } else {
+        $clear.attr('hidden', true);
+      }
+
+      // Task 1: Real-time live filter on .menu-item cards using .filter()
+      const $cards = $('.menu-grid .menu-item');
+      if ($cards.length) {
+        $cards.hide();
+        const $matchingCards = $cards.filter(function () {
+          return $(this).text().toLowerCase().indexOf(lower) !== -1;
+        });
+        $matchingCards.show();
+        highlightMatches($cards.find('.menu-name, .menu-category'), query);
+      }
+
+      // Also live-filter the #price-list items using .filter()
+      const $priceItems = $('#price-list .price-item');
+      $priceItems.hide();
+      const $matchingPriceItems = $priceItems.filter(function () {
+        return $(this).text().toLowerCase().indexOf(lower) !== -1;
+      });
+      $matchingPriceItems.show();
+      highlightMatches($priceItems.find('span:first-child'), query);
+
+      const visibleCount = $cards.length ? $cards.filter(':visible').length : $matchingPriceItems.length;
+      if (!query) {
+        $status.text('');
+      } else if (visibleCount === 0) {
+        $status.text('No snacks or drinks found for "' + query + '".');
+      } else {
+        $status.text('Showing ' + visibleCount + ' matching menu item(s) for "' + query + '".');
+      }
+
+      if (showAutocomplete) {
+        renderSuggestions($suggestions, suggestionPool, query, function (chosen) {
+          $input.val(chosen).trigger('keyup');
+          $suggestions.empty().attr('hidden', true);
+        });
+      }
+    }
+
+    $input.on('keyup input', function (event) {
+      if (event.key === 'Escape') {
+        $suggestions.empty().attr('hidden', true);
+        return;
+      }
+      applyMenuSearch(true);
+    });
+
+    $clear.on('click', function () {
+      $input.val('');
+      $suggestions.empty().attr('hidden', true);
+      applyMenuSearch(false);
+      $input.trigger('focus');
+    });
+
+    // Re-apply search filter when category buttons re-render the price list
+    $('#menu-filter').on('click', '.filter-btn', function () {
+      setTimeout(function () { applyMenuSearch(false); }, 0);
+    });
+
+    $(document).on('click', function (event) {
+      if (!$(event.target).closest('#menu-search-wrapper').length) {
+        $suggestions.empty().attr('hidden', true);
+      }
+    });
+  }
+
+  // Tasks 1, 2 & 3 on Home page FAQ section (index.html)
+  function initFaqSearch() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $input = $('#faq-search');
+    if (!$input.length) return;
+
+    const $clear = $('#faq-search-clear');
+    const $suggestions = $('#faq-suggestions');
+    const $status = $('#faq-search-status');
+    const $items = $('#faq .faq-item');
+
+    const faqSuggestions = [
+      { label: 'How do I book a seat?',       value: 'book a seat', tag: 'Booking' },
+      { label: 'Open 24/7 in Astana',         value: '24/7',        tag: 'Hours' },
+      { label: 'Daytime vs Night Pass hours', value: 'Night Pass',  tag: 'Tariffs' },
+      { label: 'VIP Zone private booths',     value: 'VIP Zone',    tag: 'Zones' },
+      { label: 'Bootcamp Zone training',      value: 'Bootcamp',    tag: 'Zones' },
+      { label: 'Tournament Room brackets',    value: 'Tournament',  tag: 'Events' },
+      { label: 'Mangilik El 55/1 address',    value: 'Mangilik El', tag: 'Location' }
+    ];
+
+    function runFaqSearch(showAutocomplete) {
+      const query = $.trim($input.val());
+      const lower = query.toLowerCase();
+
+      if (query) {
+        $clear.removeAttr('hidden');
+      } else {
+        $clear.attr('hidden', true);
+      }
+
+      // Restore & highlight all FAQ questions and answers using .html(), regex, .wrap()
+      const totalHighlights = highlightMatches(
+        $items.find('.faq-question span:first-child, .faq-answer-inner p'),
+        query
+      );
+
+      // Task 1: Filter FAQ items with .filter()
+      $items.hide();
+      const $matched = $items.filter(function () {
+        return $(this).text().toLowerCase().indexOf(lower) !== -1;
+      });
+      $matched.show();
+
+      // Open matching accordion items automatically when searching so highlighted words are visible
+      $items.each(function () {
+        const isMatch = Boolean(query) && $(this).is(':visible');
+        setAccordionItem(this, isMatch);
+      });
+
+      if (!query) {
+        $status.text('');
+      } else if (!$matched.length) {
+        $status.text('No FAQ entries match "' + query + '".');
+      } else {
+        $status.text(
+          'Found ' + totalHighlights + ' highlighted match(es) across ' + $matched.length + ' question(s).'
+        );
+      }
+
+      if (showAutocomplete) {
+        renderSuggestions($suggestions, faqSuggestions, query, function (chosen) {
+          $input.val(chosen);
+          runFaqSearch(false);
+        });
+      }
+    }
+
+    $input.on('keyup input', function (event) {
+      if (event.key === 'Escape') {
+        $suggestions.empty().attr('hidden', true);
+        return;
+      }
+      runFaqSearch(true);
+    });
+
+    $clear.on('click', function () {
+      $input.val('');
+      $suggestions.empty().attr('hidden', true);
+      runFaqSearch(false);
+      $input.trigger('focus');
+    });
+
+    $(document).on('click', function (event) {
+      if (!$(event.target).closest('#faq-search-wrapper').length) {
+        $suggestions.empty().attr('hidden', true);
+      }
+    });
+  }
+
+  /* ======================================================================
+     Assignment 6 — Task 0: Setup ($(document).ready)
+     ====================================================================== */
+  if (typeof window.jQuery !== 'undefined') {
+    $(document).ready(function () {
+      console.log('jQuery is ready!');
+      initMenuSearch();
+      initFaqSearch();
+    });
   }
 
   /* ---------- Boot ---------- */

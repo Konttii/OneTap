@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </head>
 <body>
 
@@ -30,6 +31,16 @@
       <div class="wrap">
         <h1>Snack bar menu</h1>
         <p>Order at the front desk or from your seat during a Night Pass — everything below is available across all zones.</p>
+
+        <div class="search-wrapper" id="menu-search-wrapper">
+          <label for="menu-search" class="search-label">Search snacks &amp; drinks</label>
+          <div class="search-bar">
+            <input type="search" id="menu-search" class="search-input" placeholder="Type to filter menu (e.g. Cola, Gorilla, Buerger, Snacks)…" autocomplete="off">
+            <button type="button" class="btn btn-outline search-clear" id="menu-search-clear" hidden>Clear</button>
+            <ul class="autocomplete-list" id="menu-suggestions" role="listbox" aria-label="Menu search suggestions" hidden></ul>
+          </div>
+          <p class="search-status" id="menu-search-status" role="status"></p>
+        </div>
 
         <div class="menu-grid">
           <figure class="menu-item">

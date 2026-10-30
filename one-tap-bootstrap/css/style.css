@@ -1499,3 +1499,114 @@ body.day-theme .navbar-nav .nav-link {
   background-color: rgba(255, 59, 82, 0.12);
   color: #ff8a98;
 }
+
+/* ==========================================================================
+   Assignment #6 — jQuery Search, UX Engagement & Web App Functionality
+   ========================================================================== */
+
+/* ---------- Part 1: Search bar, autocomplete & keyword highlighting ---------- */
+.search-wrapper {
+  max-width: 620px;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 59, 82, 0.25);
+}
+
+.search-clear {
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.is-active {
+  background-color: rgba(255, 59, 82, 0.18);
+  color: var(--accent);
+}
+
+.autocomplete-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--steel);
+}
+
+.search-status {
+  margin: 0.45rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+mark.search-highlight {
+  padding: 0.05rem 0.25rem;
+  border-radius: 4px;
+  background-color: rgba(255, 59, 82, 0.35);
+  border: 1px solid var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+body.day-theme mark.search-highlight {
+  background-color: rgba(255, 59, 82, 0.22);
+  color: #14161e;
+}
