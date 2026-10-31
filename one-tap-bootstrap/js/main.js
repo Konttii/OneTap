@@ -24,6 +24,8 @@
    Task 1  Real-time search/filter .. initMenuSearch(), initFaqSearch()
    Task 2  Autocomplete suggestions . renderSuggestions()
    Task 3  Search highlighting ...... highlightMatches() (.html, regex, .wrap)
+   Task 4  Scroll progress bar ...... initScrollProgress()
+   Task 5  Animated number counter .. initCounters()
    ========================================================================== */
 (function () {
   'use strict';
@@ -1149,6 +1151,72 @@
   }
 
   /* ======================================================================
+     Assignment 6 — Part 2: UX Engagement Elements with jQuery
+     Task 4: Colorful and Stylized Scroll Progress Bar
+     Task 5: Animated Number Counter
+     ====================================================================== */
+  function initScrollProgress() {
+    if (typeof window.jQuery === 'undefined') return;
+    if (!$('#scroll-progress').length) {
+      $('body').prepend(
+        '<div class="scroll-progress" id="scroll-progress" aria-hidden="true">' +
+          '<div class="scroll-progress-bar" id="scroll-progress-bar"></div>' +
+        '</div>'
+      );
+    }
+
+    const $bar = $('#scroll-progress-bar');
+
+    function updateProgress() {
+      const scrollTop = $(window).scrollTop();
+      const docHeight = $(document).height() - $(window).height();
+      const percent = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      $bar.css('width', percent + '%');
+    }
+
+    $(window).on('scroll resize', updateProgress);
+    updateProgress();
+  }
+
+  function initCounters() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $counters = $('.stat-number[data-target]');
+    if (!$counters.length) return;
+
+    function animateCountersIfVisible() {
+      const viewBottom = $(window).scrollTop() + $(window).height();
+
+      $counters.each(function () {
+        const $counter = $(this);
+        if ($counter.data('counted')) return;
+
+        if ($counter.offset().top < viewBottom - 30) {
+          $counter.data('counted', true);
+          const target = Number($counter.attr('data-target')) || 0;
+          const suffix = $counter.attr('data-suffix') || '';
+
+          $({ countValue: 0 }).animate(
+            { countValue: target },
+            {
+              duration: 1800,
+              easing: 'swing',
+              step: function () {
+                $counter.text(Math.floor(this.countValue) + suffix);
+              },
+              complete: function () {
+                $counter.text(target + suffix);
+              }
+            }
+          );
+        }
+      });
+    }
+
+    $(window).on('scroll resize', animateCountersIfVisible);
+    animateCountersIfVisible();
+  }
+
+  /* ======================================================================
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
@@ -1156,6 +1224,8 @@
       console.log('jQuery is ready!');
       initMenuSearch();
       initFaqSearch();
+      initScrollProgress();
+      initCounters();
     });
   }
 
