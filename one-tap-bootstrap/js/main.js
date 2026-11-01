@@ -26,6 +26,9 @@
    Task 3  Search highlighting ...... highlightMatches() (.html, regex, .wrap)
    Task 4  Scroll progress bar ...... initScrollProgress()
    Task 5  Animated number counter .. initCounters()
+   Task 6  Loading spinner on submit  setSubmitLoading()
+   Task 7  Toast notification system  showToast()
+   Task 8  Copy to clipboard ........ initClipboardCopy() (.on('copy'))
    ========================================================================== */
 (function () {
   'use strict';
@@ -470,13 +473,25 @@
           if (ok) reset();
           showSuccessMessage(form, message, !ok);
           playSound(ok ? 'success' : 'error');
+          showToast(
+            ok ? 'Form submitted successfully!' : 'Could not send booking request.',
+            ok ? 'success' : 'error'
+          );
         });
         return;
       }
 
-      reset();
-      showSuccessMessage(form, settings.successMessage || 'Thank you! Your form has been submitted.');
-      if (typeof settings.onSuccess === 'function') settings.onSuccess(form);
+      // Assignment 6 (Task 6): show loading spinner & "Please wait…" on submit, then restore after a short delay
+      const submitBtn = form.querySelector('[type="submit"]');
+      setSubmitLoading(submitBtn, true);
+      setTimeout(function () {
+        setSubmitLoading(submitBtn, false);
+        reset();
+        showSuccessMessage(form, settings.successMessage || 'Thank you! Your form has been submitted.');
+        playSound('success');
+        showToast('Form submitted successfully!', 'success');
+        if (typeof settings.onSuccess === 'function') settings.onSuccess(form);
+      }, 1200);
     });
 
     return { reset: reset };
@@ -525,27 +540,30 @@
     delete data.password;
     delete data['confirm-password'];
 
-    submit.disabled = true;
-    submit.textContent = 'Sending…';
+    // Assignment 6 (Task 6): Loading spinner + "Please wait…" and disabled button during submit
+    setSubmitLoading(submit, true);
+    const delayPromise = new Promise(function (resolve) { setTimeout(resolve, 1200); });
 
-    fetch(BOOKING_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-      .then(function (response) {
+    Promise.all([
+      fetch(BOOKING_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
-      })
-      .then(function (result) {
+      }),
+      delayPromise
+    ])
+      .then(function (results) {
+        const result = results[0];
         callback(true, 'Thank you, ' + data.fullname + '! Booking #' + result.id + ' was sent. We will confirm it shortly.');
       })
       .catch(function () {
         callback(false, 'Could not send the request. Check your internet connection and try again.');
       })
       .finally(function () {
-        submit.disabled = false;
-        submit.textContent = 'Send booking request';
+        setSubmitLoading(submit, false);
       });
   }
 
@@ -573,6 +591,7 @@
         });
         removeSuccessMessage(form);
         playSound('click');
+        showToast('Booking form fields cleared.', 'info');
       });
     }
   }
@@ -726,6 +745,7 @@
       const next = document.body.classList.contains('day-theme') ? 'night' : 'day';
       setTheme(next);
       playSound('click');
+      showToast('Switched to ' + (next === 'day' ? 'Day' : 'Night') + ' theme.', 'info');
       try { localStorage.setItem(THEME_STORAGE_KEY, next); } catch (error) { /* ignore */ }
     });
   }
@@ -791,6 +811,7 @@
         const value = Number(star.dataset.value);
         showRating(value);
         playSound(value >= 3 ? 'success' : 'error');
+        showToast('Thanks! You rated OneTap ' + value + '/5 stars.', 'success');
         try { localStorage.setItem(RATING_STORAGE_KEY, value); } catch (error) { /* ignore */ }
       });
     });
@@ -1217,6 +1238,123 @@
   }
 
   /* ======================================================================
+     Assignment 6 — Task 6: Loading spinner on Submit
+     Task 7: Notification System (Temporary Toast)
+     Task 8: Copied to Clipboard Button (.on('copy'))
+     ====================================================================== */
+  function setSubmitLoading(button, isLoading) {
+    if (!button) return;
+    if (typeof window.jQuery !== 'undefined') {
+      const $btn = $(button);
+      if (isLoading) {
+        if (!$btn.data('original-label')) {
+          $btn.data('original-label', $btn.text());
+        }
+        $btn.prop('disabled', true).addClass('is-loading');
+        $btn.html('<span class="btn-spinner" aria-hidden="true"></span><span>Please wait…</span>');
+      } else {
+        $btn.prop('disabled', false).removeClass('is-loading');
+        $btn.text($btn.data('original-label') || 'Submit');
+      }
+      return;
+    }
+
+    if (isLoading) {
+      button.dataset.originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Please wait…';
+    } else {
+      button.disabled = false;
+      button.textContent = button.dataset.originalLabel || 'Submit';
+    }
+  }
+
+  function showToast(message, type) {
+    if (typeof window.jQuery === 'undefined') return;
+    let $container = $('#toast-container');
+    if (!$container.length) {
+      $container = $('<div class="toast-container" id="toast-container" aria-live="polite"></div>');
+      $('body').append($container);
+    }
+
+    const kind = type || 'success';
+    const icon = kind === 'success' ? '✓' : (kind === 'info' ? 'i' : '!');
+    const $toast = $(
+      '<div class="toast-notification is-' + kind + '" role="status">' +
+        '<span class="toast-icon" aria-hidden="true">' + icon + '</span>' +
+        '<span class="toast-text"></span>' +
+      '</div>'
+    );
+    $toast.find('.toast-text').text(message);
+
+    $container.append($toast);
+    $toast.hide().fadeIn(220).delay(2800).fadeOut(400, function () {
+      $(this).remove();
+    });
+  }
+
+  function copyStringToClipboard(text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      return navigator.clipboard.writeText(text).catch(function () {
+        fallbackCopyText(text);
+      });
+    }
+    fallbackCopyText(text);
+    return Promise.resolve();
+  }
+
+  function fallbackCopyText(text) {
+    const $temp = $('<textarea readonly></textarea>').val(text).css({
+      position: 'fixed',
+      left: '-9999px',
+      top: '0'
+    });
+    $('body').append($temp);
+    $temp[0].select();
+    try { document.execCommand('copy'); } catch (error) { /* ignore */ }
+    $temp.remove();
+  }
+
+  function initClipboardCopy() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $buttons = $('.copy-btn');
+    if (!$buttons.length) return;
+
+    // Task 8 hint: use .on('copy') to update icon to checkmark, show tooltip & toast
+    $(document).on('copy', '.copy-btn, .copy-snippet', function (event, manualValue) {
+      const $btn = $(this).hasClass('copy-btn') ? $(this) : $(this).find('.copy-btn');
+      if (!$btn.length) return;
+
+      const copiedValue = manualValue || $btn.attr('data-copy') || '';
+      const $icon = $btn.find('.copy-icon');
+      const $label = $btn.find('.copy-text');
+
+      $icon.text('✓');
+      $label.text('Copied');
+      $btn.addClass('is-copied');
+
+      clearTimeout($btn.data('copy-timer'));
+      const timer = setTimeout(function () {
+        $icon.text('📋');
+        $label.text('Copy');
+        $btn.removeClass('is-copied');
+      }, 2000);
+      $btn.data('copy-timer', timer);
+
+      playSound('success');
+      showToast('Copied to clipboard: ' + copiedValue, 'success');
+    });
+
+    $buttons.on('click', function () {
+      const $btn = $(this);
+      const value = $btn.attr('data-copy') || '';
+      copyStringToClipboard(value).then(function () {
+        $btn.trigger('copy', [value]);
+      });
+    });
+  }
+
+  /* ======================================================================
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
@@ -1226,6 +1364,7 @@
       initFaqSearch();
       initScrollProgress();
       initCounters();
+      initClipboardCopy();
     });
   }
 

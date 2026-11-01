@@ -1610,3 +1610,168 @@ body.day-theme mark.search-highlight {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ---------- Task 6: Loading spinner on Submit ---------- */
+.btn.is-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  opacity: 0.85;
+  cursor: wait;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Task 7: Notification System (Toasts) ---------- */
+.toast-container {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 3500;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: min(360px, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+.toast-notification {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+  pointer-events: auto;
+}
+
+.toast-notification.is-success {
+  border-color: #2ecc71;
+}
+
+.toast-notification.is-info {
+  border-color: #3d7ca6;
+}
+
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background-color: rgba(255, 59, 82, 0.2);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.toast-notification.is-success .toast-icon {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.toast-notification.is-info .toast-icon {
+  background-color: rgba(61, 124, 166, 0.25);
+  color: #63b3ed;
+}
+
+/* ---------- Task 8: Copied to Clipboard Button & Tooltip ---------- */
+.contact-copy-list li {
+  margin-bottom: 0.65rem;
+}
+
+.promo-copy-row {
+  margin-top: var(--space-2);
+}
+
+.copy-snippet {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: 0.35rem;
+}
+
+.copy-value {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.92rem;
+}
+
+.copy-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  color: var(--text);
+  font: 600 0.82rem var(--font-body);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.copy-btn.is-copied {
+  border-color: #2ecc71;
+  background-color: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+}
+
+.copy-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background-color: #14161e;
+  border: 1px solid #2ecc71;
+  color: #8df0b4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.copy-btn.is-copied .copy-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
