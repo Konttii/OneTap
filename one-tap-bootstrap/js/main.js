@@ -29,6 +29,7 @@
    Task 6  Loading spinner on submit  setSubmitLoading()
    Task 7  Toast notification system  showToast()
    Task 8  Copy to clipboard ........ initClipboardCopy() (.on('copy'))
+   Task 9  Image lazy loading ....... initLazyLoading() (scroll, .offset, .attr)
    ========================================================================== */
 (function () {
   'use strict';
@@ -1355,6 +1356,47 @@
   }
 
   /* ======================================================================
+     Assignment 6 — Task 9: Image Lazy Loading
+     Loads images only when they enter the viewport using scroll(), .offset(), .attr('src')
+     ====================================================================== */
+  function initLazyLoading() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $lazyImages = $('img.lazy-img[data-src]');
+    if (!$lazyImages.length) return;
+
+    function checkAndLoadImages() {
+      const scrollTop = $(window).scrollTop();
+      const windowHeight = $(window).height();
+
+      $lazyImages.each(function () {
+        const $img = $(this);
+        const realSrc = $img.attr('data-src');
+        if (!realSrc) return;
+
+        // Task 9 hint: use .offset() and .attr('src')
+        if ($img.offset().top < scrollTop + windowHeight + 120) {
+          $img.on('load', function () {
+            $img.addClass('is-loaded');
+          });
+          $img.attr('src', realSrc).removeAttr('data-src');
+          if (this.complete) {
+            $img.addClass('is-loaded');
+          }
+        }
+      });
+    }
+
+    // Task 9 hint: use scroll() (with .on('scroll') fallback for jQuery 4)
+    if (typeof $(window).scroll === 'function') {
+      $(window).scroll(checkAndLoadImages);
+    } else {
+      $(window).on('scroll', checkAndLoadImages);
+    }
+    $(window).on('resize', checkAndLoadImages);
+    checkAndLoadImages();
+  }
+
+  /* ======================================================================
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
@@ -1365,6 +1407,7 @@
       initScrollProgress();
       initCounters();
       initClipboardCopy();
+      initLazyLoading();
     });
   }
 

@@ -53,6 +53,21 @@ OneTap — это современный веб-сайт для киберспо
 - **Sounds** — короткие звуки (Web Audio API) при клике, рейтинге и отправке формы; новый звук останавливает предыдущий.
 - **Animations** — CSS-переходы: появление пунктов прайс-листа, увеличение звёзд, плавная смена темы.
 
+## Assignment #6 — jQuery (Search, UX Engagement & Web App Functionality)
+Во все HTML-страницы внутри `<head>` подключён CDN `jQuery 4.0.0`, а в `js/main.js` (и `one-tap-bootstrap/js/main.js`) реализована инициализация через `$(document).ready()` с выводом `"jQuery is ready!"` в консоль:
+- **Part 1. jQuery Search**
+  - **Task 1 (Real-time Search & Live Filter)** — живой поиск по меню снеков и прайс-листу (`menu.html`) и по вопросам FAQ (`index.html`) через `.on('keyup')` и `.filter()`.
+  - **Task 2 (Autocomplete Search Suggestions)** — выпадающий список подсказок (`#menu-suggestions`, `#faq-suggestions`) при вводе текста с выбором по клику.
+  - **Task 3 (Search Highlighting)** — подсветка всех совпадений ключевых слов в FAQ и меню с помощью `.html()`, регулярных выражений (`RegExp`) и `.wrap('<mark class="search-highlight"></mark>')`.
+- **Part 2. UX Engagement Elements with jQuery**
+  - **Task 4 (Scroll Progress Bar)** — яркий градиентный индикатор прокрутки страницы в верхней части экрана (`#scroll-progress-bar`), обновляемый при `scroll`.
+  - **Task 5 (Animated Number Counter)** — секция статистики клуба **OneTap in numbers** на главной странице (`index.html`) с плавной анимацией чисел (`1500+`, `80`, `500Hz`, `120+`) через jQuery `.animate()`.
+  - **Task 6 (Loading Spinner on Submit)** — при отправке форм бронирования и подписки кнопка показывает спиннер и текст `Please wait…`, временно блокируется (`disabled`) и возвращается в исходное состояние после ответа.
+- **Part 3. Using jQuery to Improve Web App Functionality**
+  - **Task 7 (Notification System)** — всплывающие toast-уведомления (`#toast-container`) с плавным появлением и исчезновением (`.fadeIn()` / `.fadeOut()`) при отправке/очистке формы, оценке клуба, смене темы и копировании.
+  - **Task 8 (Copied to Clipboard Button)** — кнопки **Copy** рядом с адресом клуба, Instagram и промокодом (`ONETAP20`) на `contact.html`, `index.html` и `services.html`: по событию `.on('copy')` меняют иконку на галочку `✓` и показывают тултип `"Copied to clipboard!"`.
+  - **Task 9 (Image Lazy Loading)** — отложенная загрузка изображений (`img.lazy-img[data-src]`) на страницах `zones.html`, `menu.html`, `team.html` и `services.html` по мере прокрутки (`scroll()`, `.offset()`, `.attr('src')`).
+
 ## Запуск проекта
 Проект не требует сложной установки (отсутствует backend). Все пути к изображениям и стилям относительные.
 Для просмотра достаточно открыть стартовый файл `index.html` (в корне папки) в любом современном браузере. Для отправки формы бронирования нужен интернет (тестовый API jsonplaceholder).

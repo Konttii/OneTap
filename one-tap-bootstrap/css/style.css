@@ -1839,3 +1839,15 @@ body.day-theme mark.search-highlight {
   transform: translateX(-50%) translateY(0);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
 }
+
+/* ---------- Task 9: Image Lazy Loading ---------- */
+img.lazy-img {
+  opacity: 0.25;
+  filter: blur(8px);
+  transition: opacity 0.45s ease, filter 0.45s ease, transform 0.3s ease;
+}
+
+img.lazy-img.is-loaded {
+  opacity: 1;
+  filter: blur(0);
+}
