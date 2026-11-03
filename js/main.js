@@ -1092,15 +1092,15 @@
         $list.empty();
         if (matchingItems.length) {
           const listHtml = matchingItems.map(function (item, idx) {
-            return '<li class="price-item" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
+            return '<li class="price-item is-visible" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
               '<span class="price-name">' + item.name + '</span>' +
               '<span class="price-val">' + item.price + ' &#8376;</span>' +
             '</li>';
           }).join('');
           $list.html(listHtml);
           highlightMatches($list.find('.price-name, .price-val'), query);
-          void $list[0].offsetWidth;
-          $list.find('.price-item').addClass('is-visible');
+        } else {
+          $list.html('<li class="price-item-empty text-muted py-3 text-center">No snacks or drinks match "' + $('<div>').text(query).html() + '"</li>');
         }
 
         // Update summary text

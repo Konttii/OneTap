@@ -1073,17 +1073,30 @@
       // Update carousel (one-tap-bootstrap/html/menu.html)
       if ($carouselItems.length) {
         let firstMatchIndex = -1;
+        const $indicators = $('#menuCarousel .carousel-indicators button');
         $carouselItems.each(function (idx) {
           const id = $(this).attr('data-id') || $(this).find('h5').text().split('—')[0].trim().toLowerCase();
           const isMatch = matchingIds.indexOf(id) !== -1;
           $(this).toggleClass('d-none', !isMatch);
+          if ($indicators.length) {
+            $indicators.eq(idx).toggleClass('d-none', !isMatch);
+          }
           if (isMatch && firstMatchIndex === -1) firstMatchIndex = idx;
         });
         highlightMatches($carouselItems.find('h5, span'), query);
 
-        if (firstMatchIndex !== -1 && !$carouselItems.eq(firstMatchIndex).hasClass('active')) {
-          $carouselItems.removeClass('active');
-          $carouselItems.eq(firstMatchIndex).addClass('active');
+        if (firstMatchIndex !== -1) {
+          $('#menuCarousel').show();
+          if (!$carouselItems.eq(firstMatchIndex).hasClass('active')) {
+            $carouselItems.removeClass('active');
+            $carouselItems.eq(firstMatchIndex).addClass('active');
+            if ($indicators.length) {
+              $indicators.removeClass('active').removeAttr('aria-current');
+              $indicators.eq(firstMatchIndex).addClass('active').attr('aria-current', 'true');
+            }
+          }
+        } else {
+          $('#menuCarousel').hide();
         }
       }
 
@@ -1092,15 +1105,15 @@
         $list.empty();
         if (matchingItems.length) {
           const listHtml = matchingItems.map(function (item, idx) {
-            return '<li class="price-item" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
+            return '<li class="price-item is-visible" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
               '<span class="price-name">' + item.name + '</span>' +
               '<span class="price-val">' + item.price + ' &#8376;</span>' +
             '</li>';
           }).join('');
           $list.html(listHtml);
           highlightMatches($list.find('.price-name, .price-val'), query);
-          void $list[0].offsetWidth;
-          $list.find('.price-item').addClass('is-visible');
+        } else {
+          $list.html('<li class="price-item-empty text-muted py-3 text-center">No snacks or drinks match "' + $('<div>').text(query).html() + '"</li>');
         }
 
         // Update summary text
