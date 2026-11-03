@@ -1632,53 +1632,224 @@
   }
 
   /* ======================================================================
-     On-Screen Page Navigation Buttons (Scroll to Top, Scroll to Bottom, Next Section)
-     Allows moving on the page by buttons.
+     Keyboard Navigation Across Cards (Bootstrap Version Only)
+     Allows traversing cards (.card, .custom-card) with keyboard arrow keys.
+     Keys:
+       - ArrowRight / ArrowDown: Next card
+       - ArrowLeft / ArrowUp:    Previous card
+       - Home:                   First card
+       - End:                    Last card
+       - Enter / Space:          Activate primary action or select card
+       - Escape:                 Deselect / clear focus
+     Console helper for live coding / defense: window.cardNavigation
      ====================================================================== */
-  function initScrollButtons() {
+  function initBootstrapCardNav() {
     if (typeof window.jQuery === 'undefined') return;
-    const $fabGroup = $('.fab-group');
-    if (!$fabGroup.length) return;
 
-    if (!$('#btn-scroll-top').length) {
-      const buttonsHtml =
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-top" title="Scroll to top of page (▲)" aria-label="Scroll to top">▲</button>' +
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-next" title="Next page section (↕)" aria-label="Jump to next section">↕</button>' +
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-bottom" title="Scroll to bottom of page (▼)" aria-label="Scroll to bottom">▼</button>';
-      $fabGroup.append(buttonsHtml);
+    // Strict guard: activate ONLY in the Bootstrap version
+    const isBootstrap = window.location.pathname.indexOf('one-tap-bootstrap') !== -1 ||
+                        $('link[href*="bootstrap"]').length > 0 ||
+                        $('.navbar-nav').length > 0;
+    if (!isBootstrap) return;
+
+    function queryCards() {
+      return $('.card:visible, .custom-card:visible').filter(function () {
+        return !$(this).closest('.popup-box, .popup-overlay, .fab-group').length;
+      });
     }
 
-    $('#btn-scroll-top').on('click', function () {
-      playSound('click');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    let $cards = queryCards();
+    const $carousel = $('#menuCarousel');
+    let activeIndex = -1;
 
-    $('#btn-scroll-bottom').on('click', function () {
-      playSound('click');
-      window.scrollTo({ top: $(document).height(), behavior: 'smooth' });
-    });
+    function getCardTitle($el) {
+      const heading = $el.find('.card-title, h1, h2, h3, h4, h5, .stat-label').first().text().trim();
+      if (heading) return heading;
+      const text = $el.text().trim();
+      return text ? text.slice(0, 32) + '…' : 'Card';
+    }
 
-    $('#btn-scroll-next').on('click', function () {
-      playSound('click');
-      const currentScroll = $(window).scrollTop();
-      const $sections = $('section:visible');
-      let $nextSection = null;
-
-      $sections.each(function () {
-        const top = $(this).offset().top;
-        if (top > currentScroll + 80) {
-          $nextSection = $(this);
-          return false; // break loop
+    function setupCardAttributes() {
+      $cards = queryCards();
+      $cards.each(function (idx) {
+        const $card = $(this);
+        if (!$card.attr('tabindex')) {
+          $card.attr('tabindex', '0');
+        }
+        $card.attr('role', 'region');
+        $card.attr('data-card-index', idx);
+        if (!$card.attr('aria-label')) {
+          $card.attr('aria-label', getCardTitle($card));
         }
       });
+    }
 
-      if ($nextSection && $nextSection.length) {
-        $nextSection[0].scrollIntoView({ behavior: 'smooth' });
-      } else if ($sections.length) {
-        // loop back to first section
-        $sections.first()[0].scrollIntoView({ behavior: 'smooth' });
+    setupCardAttributes();
+
+    function setActiveCard(index, shouldScroll, playAudio) {
+      $cards = queryCards();
+      if (!$cards.length) return;
+
+      if (index < 0) index = $cards.length - 1;
+      if (index >= $cards.length) index = 0;
+      activeIndex = index;
+
+      $cards.removeClass('is-card-focused').attr('aria-selected', 'false');
+      const $target = $cards.eq(activeIndex);
+      $target.addClass('is-card-focused').attr('aria-selected', 'true');
+      $target.focus();
+
+      if (shouldScroll && $target.length && $target[0].scrollIntoView) {
+        $target[0].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
+      }
+
+      if (playAudio) {
+        playSound('click');
+      }
+
+      const title = getCardTitle($target);
+      console.log('Card focused [' + (activeIndex + 1) + '/' + $cards.length + ']: ' + title);
+    }
+
+    // Direct click / focus on cards
+    $(document).off('click.cardNav', '.card, .custom-card').on('click.cardNav', '.card, .custom-card', function (event) {
+      if ($(event.target).is('a, button, input, textarea, select')) return;
+      $cards = queryCards();
+      const idx = $cards.index(this);
+      if (idx !== -1) {
+        setActiveCard(idx, false, true);
       }
     });
+
+    $(document).off('focusin.cardNav', '.card, .custom-card').on('focusin.cardNav', '.card, .custom-card', function () {
+      $cards = queryCards();
+      const idx = $cards.index(this);
+      if (idx !== -1 && idx !== activeIndex) {
+        $cards.removeClass('is-card-focused').attr('aria-selected', 'false');
+        $(this).addClass('is-card-focused').attr('aria-selected', 'true');
+        activeIndex = idx;
+      }
+    });
+
+    // Keyboard controls (Arrows, Home, End, Enter, Escape)
+    $(document).off('keydown.bootstrapCardNav').on('keydown.bootstrapCardNav', function (event) {
+      const activeTag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || $(document.activeElement).is('[contenteditable]')) {
+        return;
+      }
+
+      $cards = queryCards();
+
+      // If on menu page and menu carousel is present, handle ArrowLeft / ArrowRight
+      if ($carousel.length && (!$cards.length || $(document.activeElement).closest('#menuCarousel').length)) {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          event.preventDefault();
+          $carousel.carousel('next');
+          playSound('click');
+          return;
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          $carousel.carousel('prev');
+          playSound('click');
+          return;
+        }
+      }
+
+      if (!$cards.length) return;
+
+      switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          event.preventDefault();
+          setActiveCard(activeIndex + 1, true, true);
+          break;
+
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          event.preventDefault();
+          setActiveCard(activeIndex - 1, true, true);
+          break;
+
+        case 'Home':
+          event.preventDefault();
+          setActiveCard(0, true, true);
+          break;
+
+        case 'End':
+          event.preventDefault();
+          setActiveCard($cards.length - 1, true, true);
+          break;
+
+        case 'Enter':
+        case ' ': // Space
+          if (activeIndex >= 0 && activeIndex < $cards.length) {
+            const $cur = $cards.eq(activeIndex);
+            const $btn = $cur.find('a.btn, a[href], button').first();
+            const title = getCardTitle($cur);
+
+            if ($btn.length && !$(document.activeElement).is('a, button')) {
+              event.preventDefault();
+              showToast('Selected: ' + title, 'success');
+              playSound('success');
+              setTimeout(function () {
+                $btn[0].click();
+              }, 200);
+            } else if (!$(document.activeElement).is('a, button')) {
+              event.preventDefault();
+              showToast('Card: ' + title, 'info');
+              playSound('success');
+            }
+          }
+          break;
+
+        case 'Escape':
+          if (activeIndex >= 0) {
+            $cards.removeClass('is-card-focused').attr('aria-selected', 'false');
+            if (document.activeElement && $(document.activeElement).is('.card, .custom-card')) {
+              document.activeElement.blur();
+            }
+            activeIndex = -1;
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    // Console API helper for live coding / defense questions
+    window.cardNavigation = {
+      getCards: function () { return queryCards(); },
+      getCurrentIndex: function () { return activeIndex; },
+      getActiveCard: function () { return activeIndex >= 0 ? queryCards().eq(activeIndex) : null; },
+      next: function () {
+        const total = queryCards().length;
+        if (total) setActiveCard((activeIndex + 1) % total, true, true);
+      },
+      prev: function () {
+        const total = queryCards().length;
+        if (total) setActiveCard((activeIndex - 1 + total) % total, true, true);
+      },
+      focusCard: function (idx) { setActiveCard(idx, true, true); },
+      select: function (idx) { setActiveCard(idx, true, true); },
+      clickActive: function () {
+        const $c = queryCards();
+        if (activeIndex >= 0 && activeIndex < $c.length) {
+          const $btn = $c.eq(activeIndex).find('a, button').first();
+          if ($btn.length) $btn[0].click();
+        }
+      },
+      clear: function () {
+        queryCards().removeClass('is-card-focused').attr('aria-selected', 'false');
+        activeIndex = -1;
+      }
+    };
+
+    console.log('⌨️ Bootstrap Card Keyboard Navigation enabled. Use [← / → / ↑ / ↓], [Home / End], [Enter] or window.cardNavigation in console.');
   }
 
   /* ======================================================================
@@ -1694,7 +1865,7 @@
       initClipboardCopy();
       initLazyLoading();
       initTableNavigation();
-      initScrollButtons();
+      initBootstrapCardNav();
     });
   }
 

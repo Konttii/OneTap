@@ -1632,56 +1632,6 @@
   }
 
   /* ======================================================================
-     On-Screen Page Navigation Buttons (Scroll to Top, Scroll to Bottom, Next Section)
-     Allows moving on the page by buttons.
-     ====================================================================== */
-  function initScrollButtons() {
-    if (typeof window.jQuery === 'undefined') return;
-    const $fabGroup = $('.fab-group');
-    if (!$fabGroup.length) return;
-
-    if (!$('#btn-scroll-top').length) {
-      const buttonsHtml =
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-top" title="Scroll to top of page (▲)" aria-label="Scroll to top">▲</button>' +
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-next" title="Next page section (↕)" aria-label="Jump to next section">↕</button>' +
-        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-bottom" title="Scroll to bottom of page (▼)" aria-label="Scroll to bottom">▼</button>';
-      $fabGroup.append(buttonsHtml);
-    }
-
-    $('#btn-scroll-top').on('click', function () {
-      playSound('click');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    $('#btn-scroll-bottom').on('click', function () {
-      playSound('click');
-      window.scrollTo({ top: $(document).height(), behavior: 'smooth' });
-    });
-
-    $('#btn-scroll-next').on('click', function () {
-      playSound('click');
-      const currentScroll = $(window).scrollTop();
-      const $sections = $('section:visible');
-      let $nextSection = null;
-
-      $sections.each(function () {
-        const top = $(this).offset().top;
-        if (top > currentScroll + 80) {
-          $nextSection = $(this);
-          return false; // break loop
-        }
-      });
-
-      if ($nextSection && $nextSection.length) {
-        $nextSection[0].scrollIntoView({ behavior: 'smooth' });
-      } else if ($sections.length) {
-        // loop back to first section
-        $sections.first()[0].scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
-
-  /* ======================================================================
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
@@ -1694,7 +1644,6 @@
       initClipboardCopy();
       initLazyLoading();
       initTableNavigation();
-      initScrollButtons();
     });
   }
 

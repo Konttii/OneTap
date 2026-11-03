@@ -1996,3 +1996,49 @@ body.day-theme .price-matrix td.is-cell-selected {
   border-left: 3px solid var(--accent);
   padding-left: 0.5rem;
 }
+
+/* ---------- Keyboard Navigation Across Cards (Bootstrap Version Only) ---------- */
+.card,
+.custom-card {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  outline: none;
+}
+
+.card:focus,
+.custom-card:focus {
+  outline: none;
+}
+
+.card.is-card-focused,
+.custom-card.is-card-focused,
+.card:focus-visible,
+.custom-card:focus-visible {
+  outline: none !important;
+  border-color: #ff3b52 !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 82, 0.45), 0 16px 36px rgba(255, 59, 82, 0.4) !important;
+  transform: translateY(-8px) scale(1.02) !important;
+  position: relative;
+  z-index: 10;
+}
+
+body.day-theme .card.is-card-focused,
+body.day-theme .custom-card.is-card-focused {
+  border-color: #ff3b52 !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 82, 0.35), 0 12px 28px rgba(255, 59, 82, 0.28) !important;
+}
+
+.table-keyboard-hint {
+  font-size: 0.95rem;
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 59, 82, 0.08);
+  border: 1px solid rgba(255, 59, 82, 0.25);
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.table-keyboard-hint kbd {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
