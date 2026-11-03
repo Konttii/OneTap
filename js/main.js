@@ -879,7 +879,37 @@
   };
 
   function initMenuFilter() {
-    // Handled in full synergy with real-time search inside initMenuSearch()
+    const buttons = document.querySelectorAll('#menu-filter .filter-btn');
+    const list = document.getElementById('price-list');
+    const summary = document.getElementById('menu-summary');
+    if (!list) return;
+
+    function render(filter) {
+      const items = menu.filterBy(filter);
+      list.innerHTML = items.map(function (item, idx) {
+        return '<li class="price-item is-visible" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
+          '<span class="price-name">' + item.name + '</span>' +
+          '<span class="price-val">' + item.price + ' &#8376;</span>' +
+        '</li>';
+      }).join('');
+
+      if (summary) {
+        summary.textContent = items.length + ' item(s), average price ' + menu.averagePrice(items) +
+          ' ₸. With 2000 ₸ you can grab up to ' + menu.itemsForBudget(2000) + ' of the cheapest snacks.';
+      }
+    }
+
+    if (buttons.length) {
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          buttons.forEach(function (btn) { btn.classList.toggle('is-active', btn === button); });
+          playSound('click');
+          render(button.dataset.filter || 'all');
+        });
+      });
+    }
+
+    render('all');
   }
 
   /* ======================================================================
@@ -895,7 +925,7 @@
   // Task 3: Highlights matching words inside $elements using .html(), regex, and .wrap()
   function highlightMatches($elements, query) {
     let matchCount = 0;
-    const trimmed = $.trim(query);
+    const trimmed = (query || '').toString().trim();
     const regex = trimmed ? new RegExp('(' + escapeRegExp(trimmed) + ')', 'gi') : null;
 
     $elements.each(function () {
@@ -924,13 +954,13 @@
 
   // Task 2: Renders autocomplete dropdown suggestions and handles selection
   function renderSuggestions($list, items, query, onSelect) {
-    const q = $.trim(query).toLowerCase();
+    const q = (query || '').toString().trim().toLowerCase();
     if (!q) {
       $list.empty().attr('hidden', true);
       return;
     }
 
-    const matches = $.grep(items, function (entry) {
+    const matches = items.filter(function (entry) {
       return entry.label.toLowerCase().indexOf(q) !== -1 ||
              (entry.tag && entry.tag.toLowerCase().indexOf(q) !== -1);
     }).slice(0, 6);
@@ -940,7 +970,7 @@
       return;
     }
 
-    const html = $.map(matches, function (entry) {
+    const html = matches.map(function (entry) {
       return '<li class="autocomplete-item" role="option" data-value="' +
         $('<div>').text(entry.value).html() + '">' +
         '<span>' + $('<div>').text(entry.label).html() + '</span>' +
@@ -1000,7 +1030,7 @@
     ];
 
     function applyFilterAndSearch(showAutocomplete) {
-      const query = $input.length ? $.trim($input.val()) : '';
+      const query = $input.length ? String($input.val() || '').trim() : '';
       const lower = query.toLowerCase();
 
       if ($clear.length) {
@@ -1212,7 +1242,7 @@
     ];
 
     function runFaqSearch(showAutocomplete) {
-      const query = $.trim($input.val());
+      const query = String($input.val() || '').trim();
       const lower = query.toLowerCase();
 
       if (query) {
@@ -1543,10 +1573,10 @@
 
       $targetCell.addClass('is-cell-selected');
 
-      const pkgLabel = $.trim($cells.eq(0).clone().children().remove().end().text());
+      const pkgLabel = String($cells.eq(0).clone().children().remove().end().text() || '').trim();
       const zoneName = zoneNames[curCol] || 'Zone';
       const zoneVal = zoneValues[curCol] || 'main';
-      const price = $.trim($targetCell.text());
+      const price = String($targetCell.text() || '').trim();
 
       if ($selectionText.length) {
         $selectionText.text(zoneName + ' — ' + pkgLabel + ' (' + price + ')');
@@ -1635,6 +1665,11 @@
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
+    if (!window.jQuery.trim) {
+      window.jQuery.trim = function (str) {
+        return str == null ? '' : String(str).trim();
+      };
+    }
     $(document).ready(function () {
       console.log('jQuery is ready!');
       initMenuSearch();
