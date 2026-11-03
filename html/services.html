@@ -56,7 +56,18 @@
           <p>Pay by the hour or lock in a membership — every plan includes the same hardware, no throttled seats.</p>
 
           <div class="table-card">
-            <table id="tariff-table" class="price-matrix">
+            <div class="table-nav-toolbar" id="table-nav-toolbar" role="region" aria-label="Table navigation controls">
+              <div class="table-nav-title">Navigate tariffs:</div>
+              <div class="table-nav-dpad">
+                <button type="button" class="btn btn-outline table-nav-btn" data-dir="up" aria-label="Previous tariff package" title="Previous package (↑)">▲</button>
+                <button type="button" class="btn btn-outline table-nav-btn" data-dir="left" aria-label="Previous gaming zone" title="Previous zone (←)">◄</button>
+                <button type="button" class="btn btn-outline table-nav-btn" data-dir="down" aria-label="Next tariff package" title="Next package (↓)">▼</button>
+                <button type="button" class="btn btn-outline table-nav-btn" data-dir="right" aria-label="Next gaming zone" title="Next zone (→)">►</button>
+              </div>
+              <div class="table-nav-info" id="table-nav-info">Selected: <strong id="table-nav-selection">Main — 1 Hour (800 &#8376;)</strong></div>
+              <a href="contact.html" class="btn btn-primary table-nav-book" id="table-nav-book">Book this tariff</a>
+            </div>
+            <table id="tariff-table" class="price-matrix" tabindex="0" aria-label="Tariffs and seating matrix">
               <thead>
                 <tr>
                   <th class="col-label">Packages</th>

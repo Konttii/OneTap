@@ -830,15 +830,15 @@
   const menu = {
     budgetLimit: 600,
     items: [
-      { name: 'Cola',      category: 'drinks', price: 800 },
-      { name: 'Gorilla',   category: 'drinks', price: 650 },
-      { name: 'Asu',       category: 'drinks', price: 400 },
-      { name: 'Buerger',   category: 'food',   price: 700 },
-      { name: 'Romanov',   category: 'food',   price: 800 },
-      { name: 'Maxi',      category: 'snacks', price: 600 },
-      { name: 'Eclipse',   category: 'snacks', price: 400 },
-      { name: 'Lays',      category: 'snacks', price: 1000 },
-      { name: 'Batonchik', category: 'snacks', price: 600 }
+      { id: 'cola',      name: 'Cola',      category: 'drinks', categoryLabel: 'Drinks',        price: 800,  keywords: 'cola кола напиток напитки drinks drink soda газировка 800' },
+      { id: 'gorilla',   name: 'Gorilla',   category: 'drinks', categoryLabel: 'Drinks',        price: 650,  keywords: 'gorilla горилла напиток напитки drinks drink energy энергетик 650' },
+      { id: 'asu',       name: 'Asu',       category: 'drinks', categoryLabel: 'Drinks',        price: 400,  keywords: 'asu асу напиток напитки drinks drink water вода 400' },
+      { id: 'buerger',   name: 'Buerger',   category: 'food',   categoryLabel: 'Burgers',       price: 700,  keywords: 'buerger burger бургер food еда burgers бургеры fastfood 700' },
+      { id: 'romanov',   name: 'Romanov',   category: 'food',   categoryLabel: 'Sandwiches',    price: 800,  keywords: 'romanov романов food еда sandwich сэндвич бутерброд 800' },
+      { id: 'maxi',      name: 'Maxi',      category: 'snacks', categoryLabel: 'Snacks & Bars', price: 600,  keywords: 'maxi макси snacks снеки bars батончик 600' },
+      { id: 'eclipse',   name: 'Eclipse',   category: 'snacks', categoryLabel: 'Bubble gum',    price: 400,  keywords: 'eclipse эклипс snacks снеки bubble gum жвачка резинка 400' },
+      { id: 'lays',      name: 'Lays',      category: 'snacks', categoryLabel: 'Snacks',        price: 1000, keywords: 'lays лейс чипсы chips snacks снеки 1000' },
+      { id: 'batonchik', name: 'Batonchik', category: 'snacks', categoryLabel: 'Batonshik',    price: 600,  keywords: 'batonchik батончик snacks снеки bar шоколад chocolate сладкое 600' }
     ],
 
     filterBy: function (filter) {
@@ -879,34 +879,7 @@
   };
 
   function initMenuFilter() {
-    const buttons = document.querySelectorAll('#menu-filter .filter-btn');
-    const list = document.getElementById('price-list');
-    const summary = document.getElementById('menu-summary');
-    if (!buttons.length || !list) return;
-
-    function render(filter) {
-      const items = menu.filterBy(filter);
-      list.innerHTML = items.map(function (item) {
-        return '<li class="price-item"><span>' + item.name + '</span><span>' + item.price + ' &#8376;</span></li>';
-      }).join('');
-
-      summary.textContent = items.length + ' item(s), average price ' + menu.averagePrice(items) +
-        ' ₸. With 2000 ₸ you can grab up to ' + menu.itemsForBudget(2000) + ' of the cheapest snacks.';
-
-      // small fade-in animation: force a reflow, then add the class so the CSS transition runs
-      void list.offsetWidth;
-      list.querySelectorAll('.price-item').forEach(function (li) { li.classList.add('is-visible'); });
-    }
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        buttons.forEach(function (btn) { btn.classList.toggle('is-active', btn === button); });
-        playSound('click');
-        render(button.dataset.filter);
-      });
-    });
-
-    render('all');
+    // Handled in full synergy with real-time search inside initMenuSearch()
   }
 
   /* ======================================================================
@@ -988,98 +961,233 @@
   function initMenuSearch() {
     if (typeof window.jQuery === 'undefined') return;
     const $input = $('#menu-search');
-    if (!$input.length) return;
+    const $list = $('#price-list');
+    const $cards = $('.menu-grid .menu-item');
+    const $carouselItems = $('#menuCarousel .carousel-item');
+    const $filterButtons = $('#menu-filter .filter-btn');
+    const $summary = $('#menu-summary');
+
+    if (!$input.length && !$list.length && !$cards.length && !$carouselItems.length) return;
 
     const $clear = $('#menu-search-clear');
     const $suggestions = $('#menu-suggestions');
     const $status = $('#menu-search-status');
 
+    let currentCategory = 'all';
+
     const suggestionPool = [
-      { label: 'Cola — 800 ₸',      value: 'Cola',      tag: 'Drinks' },
-      { label: 'Gorilla — 650 ₸',   value: 'Gorilla',   tag: 'Drinks' },
-      { label: 'Asu — 400 ₸',       value: 'Asu',       tag: 'Drinks' },
-      { label: 'Maxi — 600 ₸',      value: 'Maxi',      tag: 'Snacks' },
-      { label: 'Buerger — 700 ₸',   value: 'Buerger',   tag: 'Food' },
-      { label: 'Romanov — 800 ₸',   value: 'Romanov',   tag: 'Food' },
-      { label: 'Eclipse — 400 ₸',   value: 'Eclipse',   tag: 'Snacks' },
-      { label: 'Lays — 1000 ₸',     value: 'Lays',      tag: 'Snacks' },
-      { label: 'Batonchik — 600 ₸', value: 'Batonchik', tag: 'Snacks' },
-      { label: 'All Drinks',        value: 'Drinks',    tag: 'Category' },
-      { label: 'All Snacks',        value: 'Snacks',    tag: 'Category' }
+      { label: 'Cola — 800 ₸',             value: 'Cola',      tag: 'Drinks' },
+      { label: 'Кола (газировка)',          value: 'Кола',      tag: 'Напитки' },
+      { label: 'Gorilla — 650 ₸',          value: 'Gorilla',   tag: 'Energy' },
+      { label: 'Горилла (энергетик)',       value: 'Горилла',   tag: 'Напитки' },
+      { label: 'Asu — 400 ₸',              value: 'Asu',       tag: 'Water' },
+      { label: 'Асу (вода)',               value: 'Асу',       tag: 'Напитки' },
+      { label: 'Buerger — 700 ₸',          value: 'Buerger',   tag: 'Food' },
+      { label: 'Бургер',                   value: 'Бургер',    tag: 'Еда' },
+      { label: 'Romanov — 800 ₸',          value: 'Romanov',   tag: 'Food' },
+      { label: 'Сэндвич Романов',          value: 'Сэндвич',   tag: 'Еда' },
+      { label: 'Maxi — 600 ₸',             value: 'Maxi',      tag: 'Snacks' },
+      { label: 'Eclipse — 400 ₸',          value: 'Eclipse',   tag: 'Gum' },
+      { label: 'Жвачка Eclipse',           value: 'Жвачка',    tag: 'Снеки' },
+      { label: 'Lays — 1000 ₸',            value: 'Lays',      tag: 'Chips' },
+      { label: 'Чипсы Lays',               value: 'Чипсы',     tag: 'Снеки' },
+      { label: 'Batonchik — 600 ₸',        value: 'Batonchik', tag: 'Snacks' },
+      { label: 'Батончик шоколадный',      value: 'Батончик',  tag: 'Снеки' },
+      { label: 'All Drinks / Все напитки', value: 'Drinks',    tag: 'Category' },
+      { label: 'Food / Вся еда',           value: 'Food',      tag: 'Category' },
+      { label: 'Snacks / Снеки',           value: 'Snacks',    tag: 'Category' },
+      { label: 'До 600 ₸',                 value: '600',       tag: 'Бюджет' }
     ];
 
-    function applyMenuSearch(showAutocomplete) {
-      const query = $.trim($input.val());
+    function applyFilterAndSearch(showAutocomplete) {
+      const query = $input.length ? $.trim($input.val()) : '';
       const lower = query.toLowerCase();
 
-      if ( query ) {
-        $clear.removeAttr('hidden');
-      } else {
-        $clear.attr('hidden', true);
+      if ($clear.length) {
+        if (query) {
+          $clear.removeAttr('hidden');
+        } else {
+          $clear.attr('hidden', true);
+        }
       }
 
-      // Task 1: Real-time live filter on .menu-item cards using .filter()
-      const $cards = $('.menu-grid .menu-item');
-      if ($cards.length) {
-        $cards.hide();
-        const $matchingCards = $cards.filter(function () {
-          return $(this).text().toLowerCase().indexOf(lower) !== -1;
-        });
-        $matchingCards.show();
-        highlightMatches($cards.find('.menu-name, .menu-category'), query);
-      }
+      // Filter the data items
+      const matchingItems = menu.items.filter(function (item) {
+        // Category condition
+        let matchesCategory = true;
+        if (currentCategory === 'drinks') matchesCategory = item.category === 'drinks';
+        else if (currentCategory === 'food') matchesCategory = item.category === 'food';
+        else if (currentCategory === 'snacks') matchesCategory = item.category === 'snacks';
+        else if (currentCategory === 'budget') matchesCategory = item.price <= menu.budgetLimit;
 
-      // Also live-filter the #price-list items using .filter()
-      const $priceItems = $('#price-list .price-item');
-      $priceItems.hide();
-      const $matchingPriceItems = $priceItems.filter(function () {
-        return $(this).text().toLowerCase().indexOf(lower) !== -1;
+        if (!matchesCategory) return false;
+        if (!query) return true;
+
+        // Query condition: matches name, price, category or keywords (Russian/English)
+        const itemText = (item.name + ' ' + item.categoryLabel + ' ' + item.category + ' ' + item.price + ' ' + item.keywords).toLowerCase();
+        return itemText.indexOf(lower) !== -1;
       });
-      $matchingPriceItems.show();
-      highlightMatches($priceItems.find('span:first-child'), query);
 
-      const visibleCount = $cards.length ? $cards.filter(':visible').length : $matchingPriceItems.length;
-      if (!query) {
-        $status.text('');
-      } else if (visibleCount === 0) {
-        $status.text('No snacks or drinks found for "' + query + '".');
-      } else {
-        $status.text('Showing ' + visibleCount + ' matching menu item(s) for "' + query + '".');
+      const matchingIds = matchingItems.map(function (it) { return it.id; });
+
+      // Update card grid (html/menu.html)
+      if ($cards.length) {
+        $cards.each(function () {
+          const id = $(this).attr('data-id') || $(this).find('.menu-name').text().split('—')[0].trim().toLowerCase();
+          const isMatch = matchingIds.indexOf(id) !== -1;
+          $(this).toggle(isMatch);
+        });
+        highlightMatches($cards.filter(':visible').find('.menu-name, .menu-category'), query);
       }
 
-      if (showAutocomplete) {
+      // Update carousel (one-tap-bootstrap/html/menu.html)
+      if ($carouselItems.length) {
+        let firstMatchIndex = -1;
+        $carouselItems.each(function (idx) {
+          const id = $(this).attr('data-id') || $(this).find('h5').text().split('—')[0].trim().toLowerCase();
+          const isMatch = matchingIds.indexOf(id) !== -1;
+          $(this).toggleClass('d-none', !isMatch);
+          if (isMatch && firstMatchIndex === -1) firstMatchIndex = idx;
+        });
+        highlightMatches($carouselItems.find('h5, span'), query);
+
+        if (firstMatchIndex !== -1 && !$carouselItems.eq(firstMatchIndex).hasClass('active')) {
+          $carouselItems.removeClass('active');
+          $carouselItems.eq(firstMatchIndex).addClass('active');
+        }
+      }
+
+      // Update price list (#price-list)
+      if ($list.length) {
+        $list.empty();
+        if (matchingItems.length) {
+          const listHtml = matchingItems.map(function (item, idx) {
+            return '<li class="price-item" tabindex="0" role="button" data-id="' + item.id + '" data-index="' + idx + '" title="Click or press Enter to select">' +
+              '<span class="price-name">' + item.name + '</span>' +
+              '<span class="price-val">' + item.price + ' &#8376;</span>' +
+            '</li>';
+          }).join('');
+          $list.html(listHtml);
+          highlightMatches($list.find('.price-name, .price-val'), query);
+          void $list[0].offsetWidth;
+          $list.find('.price-item').addClass('is-visible');
+        }
+
+        // Update summary text
+        if ($summary.length) {
+          if (!matchingItems.length) {
+            $summary.text('0 items found for the selected criteria.');
+          } else {
+            $summary.text(
+              matchingItems.length + ' item(s), average price ' + menu.averagePrice(matchingItems) +
+              ' ₸. With 2000 ₸ you can grab up to ' + menu.itemsForBudget(2000) + ' of the cheapest snacks.'
+            );
+          }
+        }
+      }
+
+      // Update search status message
+      if ($status.length) {
+        const totalCount = matchingItems.length;
+        if (!query) {
+          if (currentCategory !== 'all') {
+            $status.text('Filtered by ' + currentCategory + ': ' + totalCount + ' item(s).');
+          } else {
+            $status.text('');
+          }
+        } else if (totalCount === 0) {
+          $status.text('No snacks or drinks found for "' + query + '". Try searching for Cola, Burger, Drinks, Snacks, or 600 ₸.');
+        } else {
+          $status.text('Found ' + totalCount + ' matching item(s) for "' + query + '".');
+        }
+      }
+
+      if (showAutocomplete && $suggestions.length) {
         renderSuggestions($suggestions, suggestionPool, query, function (chosen) {
-          $input.val(chosen).trigger('keyup');
-          $suggestions.empty().attr('hidden', true);
+          $input.val(chosen);
+          applyFilterAndSearch(false);
+          $input.trigger('focus');
         });
       }
     }
 
-    $input.on('keyup input', function (event) {
-      if (event.key === 'Escape') {
-        $suggestions.empty().attr('hidden', true);
-        return;
+    if ($input.length) {
+      // Input typing & escape
+      $input.off('keyup.menu input.menu').on('keyup.menu input.menu', function (event) {
+        if (event.key === 'Escape') {
+          if ($suggestions.length) $suggestions.empty().attr('hidden', true);
+          return;
+        }
+        applyFilterAndSearch(true);
+      });
+
+      // Clear button
+      if ($clear.length) {
+        $clear.off('click.menu').on('click.menu', function () {
+          $input.val('');
+          if ($suggestions.length) $suggestions.empty().attr('hidden', true);
+          applyFilterAndSearch(false);
+          $input.trigger('focus');
+        });
       }
-      applyMenuSearch(true);
-    });
 
-    $clear.on('click', function () {
-      $input.val('');
-      $suggestions.empty().attr('hidden', true);
-      applyMenuSearch(false);
-      $input.trigger('focus');
-    });
+      // Close suggestions on outside click
+      $(document).off('click.menuSuggestions').on('click.menuSuggestions', function (event) {
+        if (!$(event.target).closest('#menu-search-wrapper').length) {
+          if ($suggestions.length) $suggestions.empty().attr('hidden', true);
+        }
+      });
+    }
 
-    // Re-apply search filter when category buttons re-render the price list
-    $('#menu-filter').on('click', '.filter-btn', function () {
-      setTimeout(function () { applyMenuSearch(false); }, 0);
-    });
+    // Category filter buttons
+    if ($filterButtons.length) {
+      $filterButtons.off('click.menu').on('click.menu', function () {
+        const filter = $(this).attr('data-filter') || 'all';
+        currentCategory = filter;
+        $filterButtons.each(function () {
+          $(this).toggleClass('is-active', $(this).attr('data-filter') === filter);
+        });
+        playSound('click');
+        applyFilterAndSearch(false);
+      });
+    }
 
-    $(document).on('click', function (event) {
-      if (!$(event.target).closest('#menu-search-wrapper').length) {
-        $suggestions.empty().attr('hidden', true);
-      }
-    });
+    // Price list keyboard navigation (ArrowUp, ArrowDown)
+    if ($list.length) {
+      $list.off('keydown.priceNav').on('keydown.priceNav', '.price-item', function (event) {
+        const $items = $list.find('.price-item');
+        const idx = $items.index(this);
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          const next = Math.min($items.length - 1, idx + 1);
+          $items.eq(next).focus().addClass('is-selected').siblings().removeClass('is-selected');
+          playSound('click');
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          const prev = Math.max(0, idx - 1);
+          $items.eq(prev).focus().addClass('is-selected').siblings().removeClass('is-selected');
+          playSound('click');
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          const name = $(this).find('.price-name').text();
+          const price = $(this).find('.price-val').text();
+          showToast('Selected: ' + name + ' (' + price + ')', 'success');
+          playSound('success');
+        }
+      });
+
+      // Price list item click selection
+      $list.off('click.priceSelect').on('click.priceSelect', '.price-item', function () {
+        $(this).addClass('is-selected').siblings().removeClass('is-selected');
+        const name = $(this).find('.price-name').text();
+        const price = $(this).find('.price-val').text();
+        showToast('Selected: ' + name + ' (' + price + ')', 'info');
+        playSound('click');
+      });
+    }
+
+    // Initial render
+    applyFilterAndSearch(false);
   }
 
   // Tasks 1, 2 & 3 on Home page FAQ section (index.html)
@@ -1397,6 +1505,183 @@
   }
 
   /* ======================================================================
+     Interactive Table Navigation (Arrow Keys & On-Screen Buttons)
+     Allows moving within #tariff-table by buttons (▲, ▼, ◄, ►) and arrow keys.
+     ====================================================================== */
+  function initTableNavigation() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $table = $('#tariff-table');
+    if (!$table.length) return;
+
+    const $tbody = $table.find('tbody');
+    const $rows = $tbody.find('tr');
+    if (!$rows.length) return;
+
+    const $selectionText = $('#table-nav-selection');
+    const $bookLink = $('#table-nav-book');
+    const $dpadBtns = $('.table-nav-btn');
+
+    const totalRows = $rows.length; // 5 rows
+    const totalCols = 4;            // 4 zones: Main, VIP, Bootcamp, Tournament
+
+    let curRow = 0;
+    let curCol = 0;
+
+    const zoneNames = ['Main Zone', 'VIP Zone', 'Bootcamp Zone', 'Tournament Room'];
+    const zoneValues = ['main', 'vip', 'bootcamp', 'tournament'];
+
+    function selectCell(r, c, playSnd) {
+      curRow = Math.max(0, Math.min(totalRows - 1, r));
+      curCol = Math.max(0, Math.min(totalCols - 1, c));
+
+      $tbody.find('td').removeClass('is-cell-selected');
+
+      const $row = $rows.eq(curRow);
+      const $cells = $row.find('td');
+      // $cells.eq(0) is package label; $cells.eq(1..4) are zone prices
+      const $targetCell = $cells.eq(curCol + 1);
+
+      $targetCell.addClass('is-cell-selected');
+
+      const pkgLabel = $.trim($cells.eq(0).clone().children().remove().end().text());
+      const zoneName = zoneNames[curCol] || 'Zone';
+      const zoneVal = zoneValues[curCol] || 'main';
+      const price = $.trim($targetCell.text());
+
+      if ($selectionText.length) {
+        $selectionText.text(zoneName + ' — ' + pkgLabel + ' (' + price + ')');
+      }
+
+      if ($bookLink.length) {
+        $bookLink.attr('href', 'contact.html?zone=' + zoneVal + '&tariff=' + encodeURIComponent(pkgLabel));
+      }
+
+      if (playSnd) {
+        playSound('click');
+      }
+    }
+
+    // Click on any zone cell selects it
+    $tbody.on('click', 'td:not(.col-label)', function () {
+      const $cell = $(this);
+      const $row = $cell.closest('tr');
+      const r = $rows.index($row);
+      const c = $row.find('td:not(.col-label)').index($cell);
+      selectCell(r, c, true);
+    });
+
+    // On-screen D-pad buttons: ▲, ▼, ◄, ►
+    $dpadBtns.on('click', function (event) {
+      event.preventDefault();
+      const dir = $(this).attr('data-dir');
+      if (dir === 'up') selectCell(curRow - 1, curCol, true);
+      else if (dir === 'down') selectCell(curRow + 1, curCol, true);
+      else if (dir === 'left') selectCell(curRow, curCol - 1, true);
+      else if (dir === 'right') selectCell(curRow, curCol + 1, true);
+    });
+
+    // Keyboard navigation when focusing on table or its toolbar
+    $(document).on('keydown.tariffTable', function (event) {
+      // Only process when not inside input, textarea or select
+      const activeTag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return;
+
+      // Check if table is visible on current page
+      if (!$table.is(':visible')) return;
+
+      switch (event.key) {
+        case 'ArrowUp':
+          event.preventDefault();
+          selectCell(curRow - 1, curCol, true);
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          selectCell(curRow + 1, curCol, true);
+          break;
+        case 'ArrowLeft':
+          event.preventDefault();
+          selectCell(curRow, curCol - 1, true);
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          selectCell(curRow, curCol + 1, true);
+          break;
+        case 'Home':
+          event.preventDefault();
+          selectCell(curRow, 0, true);
+          break;
+        case 'End':
+          event.preventDefault();
+          selectCell(curRow, totalCols - 1, true);
+          break;
+        case 'Enter':
+          if ($table.is(':hover') || $(document.activeElement).closest('#tariff-table, #table-nav-toolbar').length) {
+            event.preventDefault();
+            const text = $selectionText.text();
+            showToast(text || 'Tariff selected!', 'success');
+            playSound('success');
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    // Initial selection: Row 0 (1 Hour), Col 0 (Main)
+    selectCell(0, 0, false);
+  }
+
+  /* ======================================================================
+     On-Screen Page Navigation Buttons (Scroll to Top, Scroll to Bottom, Next Section)
+     Allows moving on the page by buttons.
+     ====================================================================== */
+  function initScrollButtons() {
+    if (typeof window.jQuery === 'undefined') return;
+    const $fabGroup = $('.fab-group');
+    if (!$fabGroup.length) return;
+
+    if (!$('#btn-scroll-top').length) {
+      const buttonsHtml =
+        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-top" title="Scroll to top of page (▲)" aria-label="Scroll to top">▲</button>' +
+        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-next" title="Next page section (↕)" aria-label="Jump to next section">↕</button>' +
+        '<button type="button" class="fab fab-scroll-nav" id="btn-scroll-bottom" title="Scroll to bottom of page (▼)" aria-label="Scroll to bottom">▼</button>';
+      $fabGroup.append(buttonsHtml);
+    }
+
+    $('#btn-scroll-top').on('click', function () {
+      playSound('click');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    $('#btn-scroll-bottom').on('click', function () {
+      playSound('click');
+      window.scrollTo({ top: $(document).height(), behavior: 'smooth' });
+    });
+
+    $('#btn-scroll-next').on('click', function () {
+      playSound('click');
+      const currentScroll = $(window).scrollTop();
+      const $sections = $('section:visible');
+      let $nextSection = null;
+
+      $sections.each(function () {
+        const top = $(this).offset().top;
+        if (top > currentScroll + 80) {
+          $nextSection = $(this);
+          return false; // break loop
+        }
+      });
+
+      if ($nextSection && $nextSection.length) {
+        $nextSection[0].scrollIntoView({ behavior: 'smooth' });
+      } else if ($sections.length) {
+        // loop back to first section
+        $sections.first()[0].scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  /* ======================================================================
      Assignment 6 — Task 0: Setup ($(document).ready)
      ====================================================================== */
   if (typeof window.jQuery !== 'undefined') {
@@ -1408,6 +1693,8 @@
       initCounters();
       initClipboardCopy();
       initLazyLoading();
+      initTableNavigation();
+      initScrollButtons();
     });
   }
 

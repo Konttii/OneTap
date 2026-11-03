@@ -1787,3 +1787,148 @@ img.lazy-img.is-loaded {
   opacity: 1;
   filter: blur(0);
 }
+
+/* ---------- Interactive Table Navigation (Arrow Keys & On-Screen Buttons) ---------- */
+.table-nav-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1.2rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.table-nav-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.table-nav-dpad {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.table-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.table-nav-btn:hover,
+.table-nav-btn:focus-visible {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(255, 59, 82, 0.5);
+  outline: none;
+}
+
+.table-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.table-nav-info {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.table-nav-info strong {
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  background-color: rgba(255, 59, 82, 0.2);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 59, 82, 0.4);
+}
+
+.table-nav-book {
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+}
+
+.price-matrix td {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, outline-color 0.18s ease;
+  position: relative;
+}
+
+.price-matrix td:hover {
+  filter: brightness(1.25);
+}
+
+.price-matrix td.is-cell-selected {
+  outline: 3px solid #ffffff !important;
+  box-shadow: 0 0 20px rgba(255, 59, 82, 0.9), inset 0 0 10px rgba(255, 255, 255, 0.35) !important;
+  transform: scale(1.06);
+  z-index: 4;
+  position: relative;
+}
+
+body.day-theme .price-matrix td.is-cell-selected {
+  outline: 3px solid #ff3b52 !important;
+  box-shadow: 0 0 16px rgba(255, 59, 82, 0.6) !important;
+}
+
+/* ---------- Page Scroll Navigation Buttons (Top, Down, Next Section) ---------- */
+.fab-scroll-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fab-scroll-nav:hover {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(255, 59, 82, 0.4);
+}
+
+.fab-scroll-nav:active {
+  transform: scale(0.95);
+}
+
+/* Price list active item for keyboard/button navigation */
+.price-item {
+  cursor: pointer;
+  transition: background-color 0.15s ease, padding 0.15s ease, border-color 0.15s ease;
+}
+
+.price-item.is-selected {
+  background-color: rgba(255, 59, 82, 0.15);
+  border-left: 3px solid var(--accent);
+  padding-left: 0.5rem;
+}

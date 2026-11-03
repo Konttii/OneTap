@@ -37,7 +37,17 @@
     <section class="py-5">
       <div class="container">
         <h1 class="mb-3">Snack bar menu</h1>
-        <p class="text-muted mb-5">Order at the front desk or from your seat during a Night Pass — everything below is available across all zones.</p>
+        <p class="text-muted mb-4">Order at the front desk or from your seat during a Night Pass — everything below is available across all zones.</p>
+
+        <div class="search-wrapper mb-4" id="menu-search-wrapper">
+          <label for="menu-search" class="search-label">Search snacks &amp; drinks</label>
+          <div class="search-bar">
+            <input type="search" id="menu-search" class="search-input" placeholder="Type to filter menu (e.g. Cola, Gorilla, Buerger, Snacks)…" autocomplete="off">
+            <button type="button" class="btn btn-outline-danger search-clear" id="menu-search-clear" hidden>Clear</button>
+            <ul class="autocomplete-list" id="menu-suggestions" role="listbox" aria-label="Menu search suggestions" hidden></ul>
+          </div>
+          <p class="search-status" id="menu-search-status" role="status"></p>
+        </div>
 
         <div class="row justify-content-center">
           <div class="col-lg-8">
@@ -55,63 +65,63 @@
               </div>
               
               <div class="carousel-inner rounded">
-                <div class="carousel-item active">
+                <div class="carousel-item active" data-id="cola" data-category="drinks" data-price="800" data-keywords="cola кола drinks напитки soda газировка 800">
                   <img src="../images/Cola.png" class="d-block w-100" alt="Cola">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Drinks</span>
                     <h5 class="mb-0">Cola — 800 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="gorilla" data-category="drinks" data-price="650" data-keywords="gorilla горилла drinks напитки energy энергетик 650">
                   <img src="../images/Gorilla.png" class="d-block w-100" alt="Gorilla">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Drinks</span>
                     <h5 class="mb-0">Gorilla — 650 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="asu" data-category="drinks" data-price="400" data-keywords="asu асу drinks напитки water вода 400">
                   <img src="../images/Asu.jpg" class="d-block w-100" alt="Asu">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Drinks</span>
                     <h5 class="mb-0">Asu — 400 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="maxi" data-category="snacks" data-price="600" data-keywords="maxi макси snacks снеки bars батончик 600">
                   <img src="../images/Maxi.png" class="d-block w-100" alt="Maxi">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Snacks &amp; Bars</span>
                     <h5 class="mb-0">Maxi — 600 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="buerger" data-category="food" data-price="700" data-keywords="buerger burger бургер food еда burgers бургеры 700">
                   <img src="../images/Buerger.jpg" class="d-block w-100" alt="Buerger">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Burgers</span>
                     <h5 class="mb-0">Buerger — 700 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="romanov" data-category="food" data-price="800" data-keywords="romanov романов food еда sandwich сэндвич бутерброд 800">
                   <img src="../images/Romanov.png" class="d-block w-100" alt="Romanov">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Sandwiches</span>
                     <h5 class="mb-0">Romanov — 800 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="eclipse" data-category="snacks" data-price="400" data-keywords="eclipse эклипс snacks снеки bubble gum жвачка 400">
                   <img src="../images/Eclipse.webp" class="d-block w-100" alt="Eclipse">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Bubble gum</span>
                     <h5 class="mb-0">Eclipse — 400 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="lays" data-category="snacks" data-price="1000" data-keywords="lays лейс snacks снеки chips чипсы 1000">
                   <img src="../images/Lays.jpg" class="d-block w-100" alt="Lays">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Snacks</span>
                     <h5 class="mb-0">Lays — 1000 &#8376;</h5>
                   </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" data-id="batonchik" data-category="snacks" data-price="600" data-keywords="batonchik батончик snacks снеки bar шоколад chocolate 600">
                   <img src="../images/Batonchik.jpg" class="d-block w-100" alt="Batonchik">
                   <div class="carousel-caption">
                     <span class="text-uppercase text-secondary small fw-bold d-block mb-1">Batonshik</span>
@@ -137,15 +147,6 @@
     <section class="price-list-section">
       <div class="container">
         <h2>Quick price list</h2>
-        <div class="search-wrapper" id="menu-search-wrapper">
-          <label for="menu-search" class="search-label">Search snacks &amp; drinks</label>
-          <div class="search-bar">
-            <input type="search" id="menu-search" class="search-input" placeholder="Type to filter menu (e.g. Cola, Gorilla, Buerger, Snacks)…" autocomplete="off">
-            <button type="button" class="btn btn-outline search-clear" id="menu-search-clear" hidden>Clear</button>
-            <ul class="autocomplete-list" id="menu-suggestions" role="listbox" aria-label="Menu search suggestions" hidden></ul>
-          </div>
-          <p class="search-status" id="menu-search-status" role="status"></p>
-        </div>
         <div class="filter-bar" id="menu-filter" role="group" aria-label="Filter menu">
           <button type="button" class="filter-btn is-active" data-filter="all">All</button>
           <button type="button" class="filter-btn" data-filter="drinks">Drinks</button>
