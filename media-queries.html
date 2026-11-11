@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTap Computer Club — Pure CSS Media Queries</title>
+  <link rel="icon" type="image/png" href="images/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/media-queries.css">
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+</head>
+<body>
+  
+  <!-- Pure CSS Navbar (No Bootstrap) -->
+  <nav class="pure-navbar">
+    <div class="pure-container pure-navbar-inner">
+      <a href="index.html" class="pure-logo"><img src="images/Logo.png" alt="OneTap logo"></a>
+      <ul class="pure-nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="zones.html">Zones</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="media-queries.html" class="active" aria-current="page">Media</a></li>
+        <li><a href="profile.html" id="nav-profile-link" class="nav-profile-pill">👤 Profile</a></li>
+        <li>
+          <button type="button" class="theme-switch-btn" data-theme-toggle role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+            <span class="theme-switch-track">
+              <span class="theme-switch-thumb"></span>
+            </span>
+            <span class="theme-switch-label">Dark</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrapper">
+    <h1 class="title">Pure CSS Responsive Grid</h1>
+    <p class="subtitle">Three cards in a row on desktop, two on tablet, one on mobile — built purely via CSS Flexbox &amp; Media Queries.</p>
+    
+    <div class="pure-css-grid">
+      <div class="custom-card">
+        <img src="images/Main.jpg" alt="Standard Zone">
+        <h3>Standard Zone</h3>
+        <p>Comfortable gaming environment for everyone with top-tier hardware. Perfect for solo or casual gaming with friends on 360Hz displays.</p>
+      </div>
+      <div class="custom-card">
+        <img src="images/Vip.webp" alt="VIP Zone">
+        <h3>VIP Zone</h3>
+        <p>Premium gaming experience with exclusive perks, enhanced privacy, and 400Hz ZOWIE BENQ setups in private sound-insulated booths.</p>
+      </div>
+      <div class="custom-card">
+        <img src="images/Bootcamp.jpg" alt="Bootcamp Zone">
+        <h3>Bootcamp Zone</h3>
+        <p>Professional setup for esports teams. Train and prepare for tournaments in a focused, high-performance 500Hz environment.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pure CSS Footer (No Bootstrap) -->
+  <footer class="pure-footer">
+    <div class="pure-container pure-footer-inner">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
+    </div>
+  </footer>
+
+  <!-- Floating tools: background switcher & subscribe button -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" data-required="true" data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="text" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-phone">Phone number</label>
+          <input type="tel" id="subscribe-phone" name="subscribe-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-password">Club PIN / Password</label>
+          <input type="password" id="subscribe-password" name="subscribe-password" placeholder="Min 8 chars, A-z &amp; number" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
