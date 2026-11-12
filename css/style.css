@@ -4,12 +4,21 @@
   --bg: #08080a;
   --bg-panel: #131316;
   --bg-card: #1a1a1f;
-  --border: #2a2a31;
+  --border: #ff3b52;
   --accent: #ff3b52;       /* logo red — primary action color */
   --accent-dim: #b4102c;   /* darker red, for borders/shadows */
   --steel: #8a8a94;        /* secondary accent, used sparingly */
   --text: #ffffff;
   --text-muted: #b8b8c0;
+
+  /* Bootstrap Variable Overrides */
+  --bs-body-color: var(--text);
+  --bs-body-bg: var(--bg);
+  --bs-secondary-color: var(--text-muted);
+  --bs-heading-color: var(--text);
+  --bs-card-bg: var(--bg-card);
+  --bs-card-color: var(--text);
+  --bs-card-border-color: var(--border);
 
   --font-display: "Anton", sans-serif;
   --font-body: "Inter", sans-serif;
@@ -44,13 +53,24 @@ h1, h2, h3 {
   margin: 0 0 var(--space-2) 0;
 }
 
-h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); }
-h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+/* Task 1: Responsive Typography using CSS Media Queries */
+h1 { font-size: 2.6rem; }
+h2 { font-size: 1.8rem; }
 h3 { font-size: 1.35rem; }
+p { font-size: 0.95rem; max-width: 62ch; color: var(--text-muted); }
 
-p {
-  max-width: 62ch;
-  color: var(--text-muted);
+/* Tablet */
+@media (min-width: 768px) {
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 2.2rem; }
+  p { font-size: 1rem; }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+  h1 { font-size: 4.5rem; }
+  h2 { font-size: 2.6rem; }
+  p { font-size: 1.1rem; }
 }
 
 a {
@@ -423,6 +443,7 @@ table tr:hover td {
 
 .form-row input[type="text"],
 .form-row input[type="email"],
+.form-row input[type="tel"],
 .form-row select,
 .form-row textarea {
   background-color: var(--bg-panel);
@@ -706,6 +727,24 @@ footer .wrap {
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* ---------- Bootstrap Overrides ---------- */
+.navbar-custom {
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.navbar-custom .nav-link {
+  color: var(--text) !important;
+}
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  color: var(--accent) !important;
 }
 
 /* ==========================================================================
@@ -1102,14 +1141,6 @@ body.popup-open {
     padding: 2rem 1.25rem 1.5rem;
   }
 
-  #contact-form {
-    padding: var(--space-3);
-  }
-
-  .time-range {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .popup-box h2 {
     font-size: 1.7rem;
   }
@@ -1291,6 +1322,40 @@ body.popup-open {
   .fab-theme::after {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ---------- Page styles moved out of inline <style> / style="" (Assignment 5) ---------- */
+/* Ensure carousel images fit well */
+.carousel-item img {
+  max-height: 400px;
+  object-fit: contain;
+  background-color: #fff; /* matching original .menu-item img */
+}
+.carousel-caption {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  border-radius: 0 0 0.5rem 0.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 2rem;
+}
+
+/* form overrides to match dark theme */
+.form-control, .form-select, .input-group-text {
+  background-color: var(--bg-panel);
+  color: var(--text);
+  border-color: var(--border);
+}
+.form-control:focus, .form-select:focus {
+  background-color: var(--bg-panel);
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(255, 59, 82, 0.25);
+}
+
+.zone-img {
+  object-fit: cover;
+  max-height: 280px;
 }
 
 /* ---------- Assignment 5: Day / Night theme ---------- */
@@ -1933,6 +1998,36 @@ body.day-theme .price-matrix td.is-cell-selected {
   padding-left: 0.5rem;
 }
 
+/* ---------- Keyboard Navigation Across Cards (Bootstrap Version Only) ---------- */
+.card,
+.custom-card {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  outline: none;
+}
+
+.card:focus,
+.custom-card:focus {
+  outline: none;
+}
+
+.card.is-card-focused,
+.custom-card.is-card-focused,
+.card:focus-visible,
+.custom-card:focus-visible {
+  outline: none !important;
+  border-color: #ff3b52 !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 82, 0.45), 0 16px 36px rgba(255, 59, 82, 0.4) !important;
+  transform: translateY(-8px) scale(1.02) !important;
+  position: relative;
+  z-index: 10;
+}
+
+body.day-theme .card.is-card-focused,
+body.day-theme .custom-card.is-card-focused {
+  border-color: #ff3b52 !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 82, 0.35), 0 12px 28px rgba(255, 59, 82, 0.28) !important;
+}
+
 .table-keyboard-hint {
   font-size: 0.95rem;
   padding: 0.6rem 0.9rem;
@@ -1940,14 +2035,518 @@ body.day-theme .price-matrix td.is-cell-selected {
   border: 1px solid rgba(255, 59, 82, 0.25);
   border-radius: var(--radius-sm);
   display: inline-block;
-  margin-bottom: 1.25rem;
 }
 
 .table-keyboard-hint kbd {
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.15rem 0.4rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
   border-radius: 4px;
 }
+
+/* ==========================================================================
+   FINAL PROJECT UPDATES
+   - Light / Dark Mode Toggle Switch & Full Contrast Fixes (Req 3)
+   - Animated Buttons & UI Effects (Req 6)
+   - Authentication Simulation & Profile Page (Req 5.1)
+   - Saved Menu Items in localStorage (Req 5.3)
+   - External Public API Integration: Steam / CheapShark Games (Req 7)
+   ========================================================================== */
+
+/* ---------- 1. Navbar Theme Toggle Switch (Req 3) ---------- */
+.theme-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--bg-card);
+  color: var(--text);
+  font: 600 0.82rem var(--font-body);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.theme-switch-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(255, 59, 82, 0.28);
+}
+
+.theme-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: #252730;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+}
+
+body.day-theme .theme-switch-track {
+  background-color: #ffd8df;
+  border-color: var(--accent);
+}
+
+body.day-theme .theme-switch-thumb {
+  transform: translateX(18px);
+  background-color: var(--accent);
+}
+
+.nav-profile-pill {
+  border: 1px solid rgba(255, 59, 82, 0.45);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem !important;
+  background-color: rgba(255, 59, 82, 0.1);
+  transition: all 0.25s ease !important;
+}
+
+.nav-profile-pill:hover,
+.nav-profile-pill.active {
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 4px 14px rgba(255, 59, 82, 0.35);
+}
+
+/* ---------- 2. Comprehensive Light Mode (day-theme) Contrast Fixes ---------- */
+body.day-theme .fab {
+  color: var(--text);
+  background-color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px rgba(20, 22, 30, 0.15);
+}
+
+body.day-theme .fab-subscribe {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+body.day-theme .navbar-toggler {
+  border-color: rgba(20, 22, 30, 0.35);
+}
+
+body.day-theme .navbar-toggler-icon {
+  filter: invert(1) grayscale(100%) brightness(0.2);
+}
+
+body.day-theme .text-light {
+  color: var(--text-muted) !important;
+}
+
+body.day-theme .table-nav-info strong {
+  color: var(--text);
+  background-color: rgba(255, 59, 82, 0.14);
+}
+
+body.day-theme .form-control::placeholder,
+body.day-theme .search-input::placeholder,
+body.day-theme textarea::placeholder {
+  color: #7b8196;
+}
+
+body:not(.day-theme) .form-control::placeholder,
+body:not(.day-theme) .search-input::placeholder,
+body:not(.day-theme) textarea::placeholder {
+  color: #888a96;
+}
+
+body.day-theme .field-error {
+  color: #c81e35;
+}
+
+body.day-theme .form-success {
+  background-color: rgba(46, 204, 113, 0.16);
+  color: #157347;
+  border-color: #2ecc71;
+}
+
+body.day-theme .form-success.is-error {
+  background-color: rgba(255, 59, 82, 0.12);
+  color: #b4102c;
+}
+
+body.day-theme .card {
+  box-shadow: 0 6px 20px rgba(20, 22, 30, 0.06);
+}
+
+/* ---------- 3. Animated Buttons & UI Effects (Req 6) ---------- */
+.btn {
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.22s ease,
+              background-color 0.22s ease,
+              border-color 0.22s ease,
+              color 0.22s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 59, 82, 0.3);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-icon-spin {
+  display: inline-block;
+  transition: transform 0.45s ease;
+}
+
+.btn:hover .btn-icon-spin {
+  transform: rotate(180deg);
+}
+
+.stat-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.35rem;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.2) rotate(-6deg);
+}
+
+.zone-card-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.22rem 0.65rem;
+  margin-bottom: 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  color: var(--accent);
+  background-color: rgba(255, 59, 82, 0.12);
+  border: 1px solid rgba(255, 59, 82, 0.35);
+}
+
+.zone-preview-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(255, 59, 82, 0.2);
+}
+
+/* ---------- 4. External API Integration: Steam Games (Req 7) ---------- */
+.api-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.api-loading-state {
+  background-color: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.api-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255, 59, 82, 0.22);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+.api-error-state {
+  background-color: rgba(255, 59, 82, 0.1);
+  border: 1px solid var(--accent);
+}
+
+.api-game-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.api-game-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px rgba(255, 59, 82, 0.22);
+}
+
+.api-game-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  background-color: #101218;
+  overflow: hidden;
+}
+
+.api-game-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.api-game-card:hover .api-game-img {
+  transform: scale(1.06);
+}
+
+.api-rating-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background-color: rgba(8, 8, 10, 0.86);
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.api-club-badge {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.6rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(255, 59, 82, 0.9);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.api-game-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.15rem;
+}
+
+.api-game-title {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text) !important;
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.api-game-meta {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin-bottom: 0.9rem;
+}
+
+.api-game-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 59, 82, 0.2);
+}
+
+.api-price-tag {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.api-price-old {
+  font-size: 0.78rem;
+  text-decoration: line-through;
+  color: var(--text-muted);
+  margin-left: 0.3rem;
+}
+
+.api-save-btn {
+  padding: 0.32rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.api-save-btn:hover,
+.api-save-btn.is-saved {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* ---------- 5. Saved Menu Items & Price List Actions (Req 5.3) ---------- */
+.price-list {
+  max-width: 100%;
+}
+
+.price-item {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.price-item-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.price-save-btn {
+  padding: 0.22rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--bg-panel);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.price-save-btn:hover,
+.price-save-btn.is-saved {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.saved-menu-card {
+  position: sticky;
+  top: 96px;
+}
+
+.saved-tray-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 59, 82, 0.2);
+  font-size: 0.92rem;
+}
+
+.saved-tray-remove {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.1rem 0.4rem;
+}
+
+/* ---------- 6. Authentication & Profile Page (Req 5.1) ---------- */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.4rem;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.auth-tab-btn {
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font: 700 1rem var(--font-body);
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.auth-tab-btn:hover {
+  color: var(--text);
+}
+
+.auth-tab-btn.is-active {
+  background-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(255, 59, 82, 0.35);
+}
+
+.btn-link-inline {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.profile-avatar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff3b52, #b4102c);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(255, 59, 82, 0.35);
+}
+
+.profile-info-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.profile-info-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  border: 1px solid rgba(255, 59, 82, 0.22);
+}
+
+.profile-info-label {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.profile-info-value {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.booking-item-card {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.65rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-panel);
+  border-left: 3px solid var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
