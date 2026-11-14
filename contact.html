@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Final Project: OneTap Gaming Club | Team: Kuandyk Koshanov, Alimzhan Tileshov & Nuradil Uzakbayev | Author: Nuradil Uzakbayev -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTap Computer Club — Contact &amp; Booking</title>
+  <link rel="icon" type="image/png" href="images/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a href="index.html" class="navbar-brand logo"><img src="images/Logo.png" alt="OneTap logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="team.html" class="nav-link">Team</a></li>
+          <li class="nav-item"><a href="zones.html" class="nav-link">Zones</a></li>
+          <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link active" aria-current="page">Contact</a></li>
+          <li class="nav-item"><a href="media-queries.html" class="nav-link">Media</a></li>
+          <li class="nav-item"><a href="profile.html" class="nav-link nav-profile-pill" id="nav-profile-link">👤 Profile</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <button type="button" class="theme-switch-btn" data-theme-toggle role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+              <span class="theme-switch-track">
+                <span class="theme-switch-thumb"></span>
+              </span>
+              <span class="theme-switch-label">Dark</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1">
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <p class="eyebrow text-center mb-2">Instant Seat Reservation</p>
+            <h1 class="mb-3 text-center">Book your seat</h1>
+            <p class="text-muted text-center mx-auto mb-5">Tell us which zone you want and when — we'll confirm within the hour during staffed shifts. All bookings are also saved to your <a href="profile.html" class="text-danger text-decoration-none fw-semibold">Member Profile</a>.</p>
+
+            <form id="contact-form" action="#" method="post" class="bg-dark p-4 p-md-5 border border-secondary rounded shadow-sm" novalidate>
+              <div class="mb-3">
+                <label for="fullname" class="form-label text-muted">Full name</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Your full name" autocomplete="name" data-required="true" data-validate="name" data-label="Full name">
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="email" class="form-label text-muted">Email</label>
+                  <input type="text" class="form-control" id="email" name="email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+                </div>
+                <div class="col-md-6">
+                  <label for="phone" class="form-label text-muted">Phone number</label>
+                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label for="password" class="form-label text-muted">Booking Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Min 8 chars (A-Z, a-z, 0-9)" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+                  <small class="field-hint d-block mt-1">At least 8 characters with uppercase, lowercase, and a number.</small>
+                </div>
+                <div class="col-md-6">
+                  <label for="confirm-password" class="form-label text-muted">Confirm password</label>
+                  <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Repeat your password" autocomplete="new-password" data-required="true" data-validate="confirm" data-match="password" data-label="Password confirmation">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="zone" class="form-label text-muted">Preferred zone</label>
+                <select class="form-select" id="zone" name="zone" data-required="true" data-label="Preferred zone">
+                  <option value="main">Main Zone (800 ₸/hr · 360Hz)</option>
+                  <option value="vip">VIP Zone (1 300 ₸/hr · 400Hz)</option>
+                  <option value="bootcamp">Bootcamp Zone (1 800 ₸/hr · 500Hz)</option>
+                  <option value="tournament">Tournament Room (2 300 ₸/hr · 5v5 Stage)</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-muted d-block">Visit time</label>
+                <div class="btn-group mb-3 w-100" role="group" aria-label="Visit time options">
+                  <input type="radio" class="btn-check" name="visit-time" id="daytime" value="daytime" autocomplete="off" checked>
+                  <label class="btn btn-outline-danger" for="daytime">Daytime (12:00 – 18:00)</label>
+
+                  <input type="radio" class="btn-check" name="visit-time" id="nightpass" value="nightpass" autocomplete="off">
+                  <label class="btn btn-outline-danger" for="nightpass">Night Pass (23:00 – 07:00)</label>
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <span class="input-group-text bg-transparent text-muted border-secondary">Start time</span>
+                      <input type="time" class="form-control" id="start-time" name="start-time" value="12:00" data-required="true" data-label="Start time">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <span class="input-group-text bg-transparent text-muted border-secondary">End time</span>
+                      <input type="time" class="form-control" id="end-time" name="end-time" value="18:00" data-required="true" data-label="End time">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="message" class="form-label text-muted">Message (Optional)</label>
+                <textarea class="form-control" id="message" name="message" rows="3" placeholder="Anything the front desk should know? (e.g. seat preference, squad size)"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 btn-lg">Send booking request</button>
+              <button type="button" class="btn btn-outline-secondary w-100 mt-2" id="clear-form">Clear form</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5">
+      <div class="container text-center">
+        <h2 class="mb-4">Find us</h2>
+        <ul class="list-unstyled text-muted d-inline-block text-start fs-5 contact-copy-list">
+          <li class="mb-2">🕒 Open 24/7</li>
+          <li class="mb-2">
+            <span>📍 Address:</span>
+            <span class="copy-snippet">
+              <code class="copy-value">Astana, Mangilik El 55/1</code>
+              <button type="button" class="copy-btn" data-copy="Astana, Mangilik El 55/1" aria-label="Copy address to clipboard">
+                <span class="copy-icon" aria-hidden="true">📋</span>
+                <span class="copy-text">Copy</span>
+                <span class="copy-tooltip" role="status">Copied to clipboard!</span>
+              </button>
+            </span>
+          </li>
+          <li class="mb-2">
+            <span>📷 Instagram:</span>
+            <span class="copy-snippet">
+              <code class="copy-value">@onetap.club</code>
+              <button type="button" class="copy-btn" data-copy="@onetap.club" aria-label="Copy Instagram handle to clipboard">
+                <span class="copy-icon" aria-hidden="true">📋</span>
+                <span class="copy-text">Copy</span>
+                <span class="copy-tooltip" role="status">Copied to clipboard!</span>
+              </button>
+            </span>
+          </li>
+          <li>
+            <span>🎟️ Promo code (20% off):</span>
+            <span class="copy-snippet">
+              <code class="copy-value">ONETAP20</code>
+              <button type="button" class="copy-btn" data-copy="ONETAP20" aria-label="Copy promo code to clipboard">
+                <span class="copy-icon" aria-hidden="true">📋</span>
+                <span class="copy-text">Copy</span>
+                <span class="copy-tooltip" role="status">Copied to clipboard!</span>
+              </button>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4 border-top border-secondary mt-auto bg-dark">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 text-muted">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Floating tools: background switcher & subscribe button -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" data-required="true" data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="text" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-phone">Phone number</label>
+          <input type="tel" id="subscribe-phone" name="subscribe-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-password">Club PIN / Password</label>
+          <input type="password" id="subscribe-password" name="subscribe-password" placeholder="Min 8 chars, A-z &amp; number" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
