@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Final Project: OneTap Gaming Club | Team: Kuandyk Koshanov, Alimzhan Tileshov & Nuradil Uzakbayev -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTap Computer Club — Member Profile &amp; Auth</title>
+  <link rel="icon" type="image/png" href="images/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a href="index.html" class="navbar-brand logo"><img src="images/Logo.png" alt="OneTap logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="team.html" class="nav-link">Team</a></li>
+          <li class="nav-item"><a href="zones.html" class="nav-link">Zones</a></li>
+          <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          <li class="nav-item"><a href="media-queries.html" class="nav-link">Media</a></li>
+          <li class="nav-item"><a href="profile.html" class="nav-link nav-profile-pill active" aria-current="page" id="nav-profile-link">👤 Profile</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <button type="button" class="theme-switch-btn" data-theme-toggle role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+              <span class="theme-switch-track">
+                <span class="theme-switch-thumb"></span>
+              </span>
+              <span class="theme-switch-label">Dark</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1">
+    <!-- Member Profile Dashboard (Displayed when Logged In) -->
+    <section class="py-5 border-bottom border-secondary" id="profile-dashboard" hidden>
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <p class="eyebrow mb-1">Authenticated Member Session</p>
+            <h1 class="mb-0">Player Profile</h1>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="contact.html" class="btn btn-primary">Book a Seat</a>
+            <button type="button" class="btn btn-outline-danger" id="logout-btn">Log Out</button>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Stored User Details Card -->
+          <div class="col-lg-5">
+            <div class="card h-100 profile-details-card">
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="profile-avatar-badge" id="profile-avatar">OT</div>
+                <div>
+                  <span class="badge bg-danger mb-1">ONETAP CLUB MEMBER</span>
+                  <h2 class="h3 mb-0" id="profile-display-name">Player Name</h2>
+                  <span class="text-muted small" id="profile-display-since">Member since 2026</span>
+                </div>
+              </div>
+
+              <div class="profile-info-list">
+                <div class="profile-info-item">
+                  <span class="profile-info-label">👤 Full Name</span>
+                  <strong class="profile-info-value" id="profile-detail-name">—</strong>
+                </div>
+                <div class="profile-info-item">
+                  <span class="profile-info-label">✉️ Email Address</span>
+                  <strong class="profile-info-value" id="profile-detail-email">—</strong>
+                </div>
+                <div class="profile-info-item">
+                  <span class="profile-info-label">📞 Phone Number</span>
+                  <strong class="profile-info-value" id="profile-detail-phone">—</strong>
+                </div>
+                <div class="profile-info-item">
+                  <span class="profile-info-label">🎮 Preferred Zone</span>
+                  <strong class="profile-info-value text-uppercase" id="profile-detail-zone">Main Zone</strong>
+                </div>
+                <div class="profile-info-item">
+                  <span class="profile-info-label">🎟️ Member Promo</span>
+                  <span class="copy-snippet">
+                    <code class="copy-value">ONETAP20</code>
+                    <button type="button" class="copy-btn" data-copy="ONETAP20" aria-label="Copy promo code">
+                      <span class="copy-icon" aria-hidden="true">📋</span>
+                      <span class="copy-text">Copy</span>
+                      <span class="copy-tooltip" role="status">Copied to clipboard!</span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saved Bookings & Saved Menu/Game Items -->
+          <div class="col-lg-7">
+            <div class="row g-4">
+              <div class="col-12">
+                <div class="card">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h4 mb-0">📅 My Seat Bookings</h3>
+                    <a href="contact.html" class="btn btn-outline-danger btn-sm">+ New Booking</a>
+                  </div>
+                  <div id="profile-bookings-list" class="profile-saved-list">
+                    <p class="text-muted mb-0">No bookings recorded yet. Reserve a seat on the Contact page!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h5 mb-0">🍔 Saved Snacks</h3>
+                    <a href="menu.html" class="btn btn-outline-secondary btn-sm">Menu →</a>
+                  </div>
+                  <div id="profile-snacks-list" class="profile-saved-list">
+                    <p class="text-muted small mb-0">No snacks saved yet.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h5 mb-0">🎮 Saved PC Games</h3>
+                    <a href="zones.html#games-api-section" class="btn btn-outline-secondary btn-sm">Catalog →</a>
+                  </div>
+                  <div id="profile-games-list" class="profile-saved-list">
+                    <p class="text-muted small mb-0">No games bookmarked yet.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Authentication Section (Sign Up & Log In Simulation via localStorage) -->
+    <section class="py-5" id="auth-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="text-center mb-4">
+              <p class="eyebrow mb-2">Member Portal · localStorage Auth</p>
+              <h1 class="mb-3" id="auth-main-heading">Sign Up or Log In</h1>
+              <p class="text-muted mx-auto">Create a local OneTap member account to store your details in <code>localStorage</code>, or log in with your credentials to access your Profile Page.</p>
+            </div>
+
+            <!-- Auth Mode Switcher Tabs -->
+            <div class="auth-tabs mb-4" role="tablist" aria-label="Authentication mode">
+              <button type="button" class="auth-tab-btn is-active" id="tab-login-btn" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="login-panel">
+                🔑 Log In
+              </button>
+              <button type="button" class="auth-tab-btn" id="tab-signup-btn" data-auth-tab="signup" role="tab" aria-selected="false" aria-controls="signup-panel">
+                ✨ Sign Up
+              </button>
+            </div>
+
+            <!-- LOG IN PANEL -->
+            <div class="auth-panel card p-4 p-md-5" id="login-panel" role="tabpanel" aria-labelledby="tab-login-btn">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <h2 class="h3 mb-0">Log In to Your Account</h2>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="fill-demo-btn" title="Auto-register and fill a demo member account">
+                  ⚡ Fill Demo Member
+                </button>
+              </div>
+              <p class="text-muted mb-4">Enter your registered email, phone number, and password to open your Member Profile.</p>
+
+              <form id="login-form" action="#" method="post" novalidate>
+                <div class="mb-3">
+                  <label for="login-email" class="form-label text-muted">Email address</label>
+                  <input type="text" class="form-control" id="login-email" name="login-email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+                </div>
+
+                <div class="mb-3">
+                  <label for="login-phone" class="form-label text-muted">Phone number</label>
+                  <input type="tel" class="form-control" id="login-phone" name="login-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+                </div>
+
+                <div class="mb-4">
+                  <label for="login-password" class="form-label text-muted">Password</label>
+                  <input type="password" class="form-control" id="login-password" name="login-password" placeholder="Min 8 chars (A-Z, a-z, 0-9)" autocomplete="current-password" data-required="true" data-validate="password" data-label="Password">
+                  <small class="field-hint d-block mt-1">Must be at least 8 characters and include uppercase, lowercase, and a number.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Log In to Profile</button>
+                <p class="text-center text-muted mt-3 mb-0">
+                  Don't have an account yet?
+                  <button type="button" class="btn-link-inline" data-switch-auth="signup">Sign Up here →</button>
+                </p>
+              </form>
+            </div>
+
+            <!-- SIGN UP PANEL -->
+            <div class="auth-panel card p-4 p-md-5" id="signup-panel" role="tabpanel" aria-labelledby="tab-signup-btn" hidden>
+              <h2 class="h3 mb-2">Create a Member Account</h2>
+              <p class="text-muted mb-4">Sign up stores your name, email, phone, and password in <code>localStorage</code> and activates your Member Profile.</p>
+
+              <form id="signup-form" action="#" method="post" novalidate>
+                <div class="mb-3">
+                  <label for="signup-name" class="form-label text-muted">Full name</label>
+                  <input type="text" class="form-control" id="signup-name" name="signup-name" placeholder="Kuandyk Koshanov" autocomplete="name" data-required="true" data-validate="name" data-label="Full name">
+                </div>
+
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <label for="signup-email" class="form-label text-muted">Email address</label>
+                    <input type="text" class="form-control" id="signup-email" name="signup-email" placeholder="player@onetap.kz" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="signup-phone" class="form-label text-muted">Phone number</label>
+                    <input type="tel" class="form-control" id="signup-phone" name="signup-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="signup-zone" class="form-label text-muted">Preferred gaming zone</label>
+                  <select class="form-select" id="signup-zone" name="signup-zone" data-required="true" data-label="Preferred gaming zone">
+                    <option value="Main Zone">Main Zone (360Hz Hall)</option>
+                    <option value="VIP Zone">VIP Zone (400Hz Private Booths)</option>
+                    <option value="Bootcamp Zone">Bootcamp Zone (500Hz Pro Training)</option>
+                    <option value="Tournament Room">Tournament Room (5v5 Arena)</option>
+                  </select>
+                </div>
+
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <label for="signup-password" class="form-label text-muted">Password</label>
+                    <input type="password" class="form-control" id="signup-password" name="signup-password" placeholder="Min 8 chars (A-Z, a-z, 0-9)" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+                    <small class="field-hint d-block mt-1">Min 8 chars, at least 1 uppercase, 1 lowercase, and 1 digit (e.g. OneTap2026).</small>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="signup-confirm" class="form-label text-muted">Confirm password</label>
+                    <input type="password" class="form-control" id="signup-confirm" name="signup-confirm" placeholder="Repeat your password" autocomplete="new-password" data-required="true" data-validate="confirm" data-match="signup-password" data-label="Password confirmation">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Sign Up &amp; Save Account</button>
+                <p class="text-center text-muted mt-3 mb-0">
+                  Already registered?
+                  <button type="button" class="btn-link-inline" data-switch-auth="login">Log In instead →</button>
+                </p>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4 border-top border-secondary mt-auto bg-dark">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 text-muted">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Floating tools: background switcher & subscribe button -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" data-required="true" data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="text" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-phone">Phone number</label>
+          <input type="tel" id="subscribe-phone" name="subscribe-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-password">Club PIN / Password</label>
+          <input type="password" id="subscribe-password" name="subscribe-password" placeholder="Min 8 chars, A-z &amp; number" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
