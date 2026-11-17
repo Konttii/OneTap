@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Final Project: OneTap Gaming Club | Team: Kuandyk Koshanov, Alimzhan Tileshov & Nuradil Uzakbayev | Author: Kuandyk Koshanov -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTap Computer Club — Zones</title>
+  <link rel="icon" type="image/png" href="images/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a href="index.html" class="navbar-brand logo"><img src="images/Logo.png" alt="OneTap logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="team.html" class="nav-link">Team</a></li>
+          <li class="nav-item"><a href="zones.html" class="nav-link active" aria-current="page">Zones</a></li>
+          <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          <li class="nav-item"><a href="media-queries.html" class="nav-link">Media</a></li>
+          <li class="nav-item"><a href="profile.html" class="nav-link nav-profile-pill" id="nav-profile-link">👤 Profile</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <button type="button" class="theme-switch-btn" data-theme-toggle role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+              <span class="theme-switch-track">
+                <span class="theme-switch-thumb"></span>
+              </span>
+              <span class="theme-switch-label">Dark</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1">
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <p class="eyebrow mb-2">Hardware &amp; Arena Setups</p>
+        <h1 class="mb-3">All zones at OneTap</h1>
+        <p class="text-muted">Four zones, four different setups. Full specs below — pricing for each is on the <a href="services.html" class="text-danger text-decoration-none fw-semibold">Services page</a>.</p>
+      </div>
+    </section>
+
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6">
+            <img class="img-fluid rounded border border-secondary w-100 zone-img lazy-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 280'%3E%3Crect width='420' height='280' fill='%231a1a1f'/%3E%3C/svg%3E" data-src="images/Main.jpg" alt="Main Zone">
+          </div>
+          <div class="col-md-6">
+            <div class="zone-card-badge">🎮 40 Stations · 360Hz</div>
+            <h2 class="text-danger mb-3">Main Zone</h2>
+            <p class="text-muted mb-3">The open-floor PC hall for everyday sessions — first come, first served, open around the clock.</p>
+            <ul class="text-muted ps-3 mb-4">
+              <li>RTX-4070, Ryzen 5 9600X, 32GB DDR5</li>
+              <li>Logitech Superlight 2 SE, Aula F75 Mechanical</li>
+              <li>ALIENWARE 360Hz Fast IPS Monitors</li>
+            </ul>
+            <a href="contact.html?zone=main" class="btn btn-outline-danger">Book this zone</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6 order-md-2">
+            <img class="img-fluid rounded border border-secondary w-100 zone-img lazy-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 280'%3E%3Crect width='420' height='280' fill='%231a1a1f'/%3E%3C/svg%3E" data-src="images/Vip.webp" alt="VIP Zone">
+          </div>
+          <div class="col-md-6 order-md-1">
+            <div class="zone-card-badge">👑 15 Private Booths · 400Hz</div>
+            <h2 class="text-danger mb-3">VIP Zone</h2>
+            <p class="text-muted mb-3">Private booths for a quieter, premium session, with priority booking and no queue.</p>
+            <ul class="text-muted ps-3 mb-4">
+              <li>Monitors ZOWIE BENQ 400Hz DyAc+</li>
+              <li>Ryzen 7 7800X3D, RTX 4070 SUPER, 32GB</li>
+              <li>Dark Project Midnight, Logitech G Pro 2 Superstrike</li>
+            </ul>
+            <a href="contact.html?zone=vip" class="btn btn-outline-danger">Book this zone</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6">
+            <img class="img-fluid rounded border border-secondary w-100 zone-img lazy-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 280'%3E%3Crect width='420' height='280' fill='%231a1a1f'/%3E%3C/svg%3E" data-src="images/Bootcamp.jpg" alt="Bootcamp Zone">
+          </div>
+          <div class="col-md-6">
+            <div class="zone-card-badge">🔥 Team Rooms · 500Hz</div>
+            <h2 class="text-danger mb-3">Bootcamp Zone</h2>
+            <p class="text-muted mb-3">Structured practice for players training seriously, with coached sessions and VOD review.</p>
+            <ul class="text-muted ps-3 mb-4">
+              <li>Ryzen 7 7800X3D, RTX 4070 SUPER, 32GB</li>
+              <li>ALIENWARE 500Hz Pro Esports Monitors</li>
+              <li>Dark Project Midnight, Logitech G Pro 2 Superstrike</li>
+            </ul>
+            <a href="contact.html?zone=bootcamp" class="btn btn-outline-danger">Book this zone</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5 border-bottom border-secondary">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6 order-md-2">
+            <img class="img-fluid rounded border border-secondary w-100 zone-img lazy-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 280'%3E%3Crect width='420' height='280' fill='%231a1a1f'/%3E%3C/svg%3E" data-src="images/Tournament.jpg" alt="Tournament Room">
+          </div>
+          <div class="col-md-6 order-md-1">
+            <div class="zone-card-badge">🏆 5v5 Stage Arena</div>
+            <h2 class="text-danger mb-3">Tournament Room</h2>
+            <p class="text-muted mb-3">Where the club's weekly brackets play out, built for head-to-head team matches.</p>
+            <ul class="text-muted ps-3 mb-4">
+              <li>Zone 5 by 5 stage configuration</li>
+              <li>Dedicated beverage fridges inside each booth</li>
+              <li>Soundproof glass partition between competing teams</li>
+            </ul>
+            <a href="contact.html?zone=tournament" class="btn btn-outline-danger">Book this zone</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- External Public API Integration (Requirement 7): Steam / CheapShark PC Games API -->
+    <section class="py-5 api-games-section" id="games-api-section">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <p class="eyebrow mb-1">Live External API Integration</p>
+            <h2 class="mb-2">Pre-Installed PC Games on All Rigs</h2>
+            <p class="text-muted mb-0">Search and filter real-time Steam PC games via the CheapShark Public API. Save your favorite titles to your Member Profile.</p>
+          </div>
+          <button type="button" class="btn btn-outline-danger btn-sm" id="api-refresh-btn" aria-label="Refresh games catalog">
+            <span class="btn-icon-spin" aria-hidden="true">↻</span> Refresh Live API
+          </button>
+        </div>
+
+        <div class="api-controls-bar mb-4">
+          <div class="search-bar flex-grow-1">
+            <input type="search" id="api-game-search" class="search-input" placeholder="Search Steam PC games live (e.g. Counter-Strike, Witcher, Cyberpunk, Tekken, Batman)…" autocomplete="off" aria-label="Search PC games via API">
+            <button type="button" class="btn btn-primary" id="api-search-btn">Search API</button>
+            <button type="button" class="btn btn-outline-secondary" id="api-clear-btn" hidden>Reset</button>
+          </div>
+          <div class="filter-bar mb-0" id="api-filter-group" role="group" aria-label="Filter API games">
+            <button type="button" class="filter-btn is-active" data-api-sort="Metacritic">Top Rated</button>
+            <button type="button" class="filter-btn" data-api-sort="Deal Rating">Hot Deals</button>
+            <button type="button" class="filter-btn" data-api-sort="Price">Budget (&le; $15)</button>
+            <button type="button" class="filter-btn" data-api-sort="saved" id="api-saved-filter-btn">⭐ Saved (<span id="api-saved-count">0</span>)</button>
+          </div>
+        </div>
+
+        <p class="search-status mb-3" id="api-status-text" role="status"></p>
+
+        <!-- Loading State -->
+        <div id="api-loading" class="api-loading-state text-center py-5" role="status" aria-live="polite">
+          <div class="api-spinner mx-auto mb-3" aria-hidden="true"></div>
+          <p class="mb-0 fw-semibold">Fetching live PC games from Steam / CheapShark API…</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="api-error" class="api-error-state text-center py-4 px-3 rounded" role="alert" hidden>
+          <p class="fw-bold text-danger mb-2" id="api-error-msg">Could not load games from the external API.</p>
+          <p class="text-muted small mb-3">Please check your internet connection or try again.</p>
+          <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <button type="button" class="btn btn-primary btn-sm" id="api-retry-btn">Try Again</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="api-fallback-btn">Load Club Backup List</button>
+          </div>
+        </div>
+
+        <!-- Dynamic API Results Grid -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4" id="api-games-grid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4 border-top border-secondary mt-auto bg-dark">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 text-muted">
+      <span>&copy; 2026 OneTap Computer Club</span>
+      <span>Team: Kuandyk Koshanov, Alimzhan Tileshov &amp; Nuradil Uzakbayev</span>
+      <span class="footer-datetime" title="Current date and time"><span aria-hidden="true">🕒</span> <time id="current-datetime" datetime="">Loading…</time></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Floating tools: background switcher & subscribe button -->
+  <div class="fab-group">
+    <button type="button" class="fab fab-theme" id="bg-toggle" aria-label="Change background color" title="Change background color">
+      <span class="fab-icon" aria-hidden="true">🎨</span>
+    </button>
+    <button type="button" class="fab fab-subscribe" id="open-popup" data-popup-open="subscribe-popup" aria-haspopup="dialog">
+      <span class="fab-icon" aria-hidden="true">✉️</span>
+      <span class="fab-label">Subscribe</span>
+    </button>
+  </div>
+
+  <!-- Subscribe popup -->
+  <div class="popup-overlay" id="subscribe-popup" aria-hidden="true">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+      <button type="button" class="popup-close" id="popup-close" data-popup-close aria-label="Close subscribe form">&times;</button>
+      <p class="popup-eyebrow">Stay in the loop</p>
+      <h2 id="popup-title">Subscribe to OneTap</h2>
+      <p>Tournament nights, new tariffs and club news — straight to your inbox.</p>
+      <form id="subscribe-form" novalidate>
+        <div class="form-row">
+          <label for="subscribe-name">Your name</label>
+          <input type="text" id="subscribe-name" name="subscribe-name" placeholder="Your name" autocomplete="name" data-required="true" data-validate="name" data-label="Name">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-email">Email</label>
+          <input type="text" id="subscribe-email" name="subscribe-email" placeholder="you@example.com" autocomplete="email" data-required="true" data-validate="email" data-label="Email">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-phone">Phone number</label>
+          <input type="tel" id="subscribe-phone" name="subscribe-phone" placeholder="+7 701 123 45 67" autocomplete="tel" data-required="true" data-validate="phone" data-label="Phone number">
+        </div>
+        <div class="form-row">
+          <label for="subscribe-password">Club PIN / Password</label>
+          <input type="password" id="subscribe-password" name="subscribe-password" placeholder="Min 8 chars, A-z &amp; number" autocomplete="new-password" data-required="true" data-validate="password" data-label="Password">
+        </div>
+        <button type="submit" class="btn btn-primary popup-submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
