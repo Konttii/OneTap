@@ -1973,6 +1973,7 @@
     if (!$buttons.length) return;
 
     $(document).off('copy.clipboard').on('copy.clipboard', '.copy-btn, .copy-snippet', function (event, manualValue) {
+      event.stopPropagation();
       const $btn = $(this).hasClass('copy-btn') ? $(this) : $(this).find('.copy-btn');
       if (!$btn.length) return;
 
