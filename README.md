@@ -1,76 +1,80 @@
-# OneTap Gaming Club 🎮
+# OneTap Gaming Club 🎮 — Final Project
 
 ## Описание проекта
-OneTap — это современный веб-сайт для киберспортивного и игрового клуба. Проект разработан для демонстрации удобного интерфейса бронирования игровых зон, ознакомления с меню, услугами и командой клуба. Дизайн выполнен в агрессивном геймерском стиле с использованием темных тонов и ярких акцентов, что полностью соответствует тематике.
+**OneTap** — современный многостраничный адаптивный веб-сайт для киберспортивного и компьютерного клуба в Астане. Проект разработан для удобного бронирования игровых мест, просмотра характеристик зон, интерактивного меню бара, матрицы тарифов, живого каталога компьютерных игр из внешнего публичного API (Steam / CheapShark API) и личного кабинета игрока с авторизацией.
 
 ## Живая версия (GitHub Pages)
-🔗 https://konttii.github.io/OneTap/
+🔗 **Live Demo:** https://konttii.github.io/OneTap/
 
-## Структура проекта
-В проекте реализовано 2 версии сайта:
-1. **Оригинальная версия** (написана на чистом HTML и CSS Flexbox, находится в папке `html/`)
-2. **Bootstrap версия** (адаптивная версия с использованием фреймворка Bootstrap 5, находится в папке `one-tap-bootstrap/html/`)
-
-Корневой `index.html` сразу перенаправляет на главную страницу основной версии (`html/index.html`).
-
-### Список HTML-страниц:
-- `index.html` — Главная страница клуба.
-- `zones.html` — Описание игровых зон (Bootcamp, VIP, Standard).
-- `menu.html` — Меню напитков и снеков клуба.
-- `services.html` — Услуги и прайс-лист.
-- `team.html` — Информация о нашей команде и персонале.
-- `contact.html` — Контактные данные и форма обратной связи.
-- `media-queries.html` — (только в Bootstrap-версии) Адаптивная типографика и сетка карточек на чистом CSS Media Queries.
-
-## Технологии
-- **HTML5** — семантическая разметка страниц.
-- **CSS3 (Flexbox)** — стилизация и адаптивный дизайн (`@media` запросы).
-- **Bootstrap 5** — использован во второй версии для надежной адаптивности и сеточной структуры.
-- **Google Fonts** — подключены шрифты 'Inter' и 'Anton'.
+## Организация файлов проекта (Requirement 10)
+```text
+/OneTap
+├── index.html            # Главная страница (Hero, статистика, зоны, внешний API игр, рейтинг, FAQ с поиском)
+├── team.html             # О клубе и команде разработчиков (Lazy Loading портретов)
+├── zones.html            # Подробный обзор 4 игровых зон + каталог игр из публичного Steam API
+├── menu.html             # Снек-бар с каруселью, живым поиском, фильтром и сохранением заказа в localStorage
+├── services.html         # Матрица тарифов с управлением кнопками и стрелками клавиатуры
+├── contact.html          # Интерактивная форма бронирования с кастомной JS-валидацией и асинхронной отправкой
+├── profile.html          # Авторизация (Sign Up / Log In) и Личный кабинет игрока (Profile Page)
+├── media-queries.html    # Демонстрация адаптивной сетки и типографики на чистом CSS (@media)
+├── /css/
+│   ├── style.css         # Основные стили, переменные тем (Dark / Light), анимации и компоненты
+│   └── media-queries.css # Чистые CSS медиа-запросы для страницы Media
+├── /js/
+│   └── script.js         # Единый модульный скрипт (Vanilla JS ES6+ & jQuery 4.0.0)
+└── /images/              # Изображения зон, меню, логотипа и участников команды
+```
 
 ## Команда разработчиков
-1. **Kuandyk Koshanov** — Главная страница (`index.html`) и Зоны (`zones.html`)
-2. **Alimzhan Tileshov** — Команда (`team.html`) и Меню (`menu.html`)
-3. **Nuradil Uzakbayev** — Услуги (`services.html`) и Контакты (`contact.html`)
+1. **Kuandyk Koshanov** — Главная страница (`index.html`), Игровые зоны (`zones.html`), интеграция внешнего API компьютерных игр.
+2. **Alimzhan Tileshov** — Команда (`team.html`), Меню снек-бара (`menu.html`), живой поиск и фильтрация с сохранением в `localStorage`.
+3. **Nuradil Uzakbayev** — Услуги и тарифы (`services.html`), Контакты и бронирование (`contact.html`), Авторизация и Профиль (`profile.html`).
 
-## Assignment #4 — JavaScript (Vanilla JS)
-Скрипт `js/main.js` (в Bootstrap-версии — `one-tap-bootstrap/js/main.js`) подключён ко всем страницам и проверяет наличие элементов перед навешиванием слушателей.
-- **Form Validation** — форма бронирования на `contact.html` (имя, email, пароль ≥ 8 символов, подтверждение пароля) и форма подписки в попапе.
-- **Accordion** — FAQ на главной странице (`index.html`), плавное раскрытие/сворачивание.
-- **Popup Form** — кнопка **Subscribe** (плавающая) открывает модальное окно; закрытие по `×`, по клику на фон и по `Esc`.
-- **Change Background Color** — плавающая кнопка 🎨 открывает панель: выбор любого цвета через color picker, готовые цвета, Random и Reset (слишком светлые цвета автоматически затемняются, чтобы текст читался).
-- **Date & Time** — текущие дата и время в футере (`October 9, 2026, 10:45:12 AM`), обновление каждую секунду.
+---
 
-## Assignment #5 — Advanced JavaScript & DOM Manipulation
-Весь код — в `js/main.js` (копия в `one-tap-bootstrap/js/main.js`), стили — только во внешних CSS-файлах (без `<style>`, `style=""` и встроенных `<script>`).
-- **Dynamic Style Changes** — кнопка ☀️/🌙 переключает дневную/ночную тему (выбор сохраняется).
-- **Manipulating Attributes** — звёздный рейтинг на главной (`querySelectorAll`, классы и `aria-pressed`).
-- **Event Listeners on Buttons** — кнопка **Clear form** на `contact.html` очищает поля через `querySelectorAll(...).forEach`.
-- **Keyboard Events** — навигация по меню стрелками ← → ↑ ↓, `Home` / `End` (`keydown` + `focus()`).
-- **Callbacks** — форма бронирования отправляется асинхронно через `fetch` (POST), результат приходит в callback.
-- **Switch Statements** — фильтр прайс-листа на `menu.html` (All / Drinks / Food / Snacks / до 600 ₸).
-- **Objects, Arrays & Loops, Higher-Order Functions** — объект `menu` с методами `filterBy()`, `averagePrice()` (`for`), `itemsForBudget()` (`while`), `map` / `filter` / `forEach`.
-- **Sounds** — короткие звуки (Web Audio API) при клике, рейтинге и отправке формы; новый звук останавливает предыдущий.
-- **Animations** — CSS-переходы: появление пунктов прайс-листа, увеличение звёзд, плавная смена темы.
+## Выполненные требования Финального Проекта (Final Project Requirements)
 
-## Assignment #6 — jQuery (Search, UX Engagement & Web App Functionality)
-Во все HTML-страницы внутри `<head>` подключён CDN `jQuery 4.0.0`, а в `js/main.js` (и `one-tap-bootstrap/js/main.js`) реализована инициализация через `$(document).ready()` с выводом `"jQuery is ready!"` в консоль:
-- **Part 1. jQuery Search**
-  - **Task 1 (Real-time Search & Live Filter)** — живой поиск по меню снеков и прайс-листу (`menu.html`) и по вопросам FAQ (`index.html`) через `.on('keyup')` и `.filter()`.
-  - **Task 2 (Autocomplete Search Suggestions)** — выпадающий список подсказок (`#menu-suggestions`, `#faq-suggestions`) при вводе текста с выбором по клику.
-  - **Task 3 (Search Highlighting)** — подсветка всех совпадений ключевых слов в FAQ и меню с помощью `.html()`, регулярных выражений (`RegExp`) и `.wrap('<mark class="search-highlight"></mark>')`.
-- **Part 2. UX Engagement Elements with jQuery**
-  - **Task 4 (Scroll Progress Bar)** — яркий градиентный индикатор прокрутки страницы в верхней части экрана (`#scroll-progress-bar`), обновляемый при `scroll`.
-  - **Task 5 (Animated Number Counter)** — секция статистики клуба **OneTap in numbers** на главной странице (`index.html`) с плавной анимацией чисел (`1500+`, `80`, `500Hz`, `120+`) через jQuery `.animate()`.
-  - **Task 6 (Loading Spinner on Submit)** — при отправке форм бронирования и подписки кнопка показывает спиннер и текст `Please wait…`, временно блокируется (`disabled`) и возвращается в исходное состояние после ответа.
-- **Part 3. Using jQuery to Improve Web App Functionality**
-  - **Task 7 (Notification System)** — всплывающие toast-уведомления (`#toast-container`) с плавным появлением и исчезновением (`.fadeIn()` / `.fadeOut()`) при отправке/очистке формы, оценке клуба, смене темы и копировании.
-  - **Task 8 (Copied to Clipboard Button)** — кнопки **Copy** рядом с адресом клуба, Instagram и промокодом (`ONETAP20`) на `contact.html`, `index.html` и `services.html`: по событию `.on('copy')` меняют иконку на галочку `✓` и показывают тултип `"Copied to clipboard!"`.
-  - **Task 9 (Image Lazy Loading)** — отложенная загрузка изображений (`img.lazy-img[data-src]`) на страницах `zones.html`, `menu.html`, `team.html` и `services.html` по мере прокрутки (`scroll()`, `.offset()`, `.attr('src')`).
-  - **Interactive Keyboard Navigation across Cards & Tables (Defense & Live Coding)**:
-    - **Навигация по карточкам с клавиатуры (Bootstrap-версия)**: на всех страницах папки `one-tap-bootstrap/` реализована навигация по карточкам (`.card`, `.custom-card`, карусель `#menuCarousel`) при помощи клавиш стрелок (`←`, `→`, `↑`, `↓`), `Home`, `End`, выбор и переход по `Enter`/`Space` и отмена по `Escape`. Активная карточка плавно скроллится в центр экрана и подсвечивается неоновой акцентной рамкой с эффектом подъёма. Для защиты и лайв-кодинга в консоли доступен глобальный объект `window.cardNavigation` (`.next()`, `.prev()`, `.focusCard(i)`, `.getCards()`).
-    - **Навигация в матрице тарифов (`services.html`)**: управление стрелками клавиатуры (`↑`, `↓`, `←`, `→`, `Enter`) для перемещения между тарифами и зонами с подсветкой ячейки и подсказками.
+### 1. Responsiveness (Адаптивность)
+- Использование **Bootstrap 5 Grid**, **CSS Flexbox** и **CSS Grid** во всех 8 связанных страницах.
+- Адаптивная типографика и сетки для **Desktop** (`≥ 1200px`), **Tablet** (`768px – 1199px`) и **Mobile** (`< 768px`).
+- Отсутствие горизонтального скролла, наложений или обрезанных элементов на любых разрешениях экрана.
 
-## Запуск проекта
-Проект не требует сложной установки (отсутствует backend). Все пути к изображениям и стилям относительные.
-Для просмотра достаточно открыть стартовый файл `index.html` (в корне папки) в любом современном браузере. Для отправки формы бронирования нужен интернет (тестовый API jsonplaceholder).
+### 2. Hosting (Хостинг)
+- Проект размещён онлайн на GitHub Pages.
+- Все пути к изображениям (`images/...`), таблицам стилей (`css/...`), скрипту (`js/script.js`) и страницам относительные и работают без ошибок 404.
+
+### 3. Light and Dark Modes (Светлая и Тёмная темы)
+- Переключатель темы (**Toggle Switch**) расположен в навигационной панели на каждой странице, а также продублирован плавающей кнопкой `☀️/🌙`.
+- Выбранный режим (`night` / `day`) сохраняется в `localStorage` (`onetap-theme`) и автоматически применяется при переходе между всеми страницами.
+- Обе темы имеют выверенный контраст текста, карточек, таблиц, форм и кнопок.
+
+### 4. Design & User Experience (Дизайн и UX)
+- Единая киберспортивная стилистика (шрифты `Anton` и `Inter`, акцентный неоновый красный `#ff3b52`, плавные переходы).
+- Индикатор прогресса прокрутки страницы (`#scroll-progress-bar`), анимированные счётчики статистики, всплывающие toast-уведомления, звуковые эффекты на базе Web Audio API и копирование промокода `ONETAP20` в один клик.
+
+### 5. Enhanced JavaScript Functionality (Расширенная функциональность JS)
+- **5.1. Authentication Simulation (`profile.html`)**:
+  - **Sign Up**: сохраняет данные пользователя (имя, email, телефон, предпочитаемую зону, пароль, дату регистрации) в `localStorage` (`onetap-users`, `onetap-current-user`).
+  - **Log In**: проверяет введённые учётные данные по `localStorage` и перенаправляет в **Личный кабинет (Profile Page)**. Для удобства демонстрации на защите предусмотрена кнопка `⚡ Fill Demo Member`.
+  - **Profile Page**: отображает сохранённые данные игрока, историю отправленных бронирований (`onetap-bookings`), избранные позиции меню (`onetap-saved-menu`) и сохранённые игры из API (`onetap-saved-games`), а также кнопку **Log Out**.
+- **5.2. Form Validation (Кастомная валидация форм без HTML-атрибутов)**:
+  - Все формы (`#contact-form`, `#signup-form`, `#login-form`, `#subscribe-form`) имеют атрибут `novalidate` и **не используют** встроенные HTML-атрибуты валидации (`required`, `pattern`, `minlength`, `maxlength`, `min`, `max`, `type="email"`).
+  - Полная проверка на JavaScript:
+    - Обязательные поля (`Required fields`)
+    - Формат Email (`Email format` через регулярное выражение)
+    - Длина и сложность пароля (`Password length >= 8` + минимум одна заглавная буква `A-Z`, одна строчная `a-z` и одна цифра `0-9`)
+    - Шаблон номера телефона (`Phone number pattern`: 10–15 цифр, поддержка формата `+7 701 123 45 67`)
+  - Понятные сообщения об ошибках выводятся прямо под полями на странице в реальном времени.
+- **5.3. Search & Filtering Functionality**:
+  - Живой поиск с автодополнением и подсветкой совпадений (`<mark class="search-highlight">`) в меню (`menu.html`) и FAQ (`index.html`).
+  - Динамическая фильтрация меню по категориям (`All`, `Drinks`, `Food`, `Snacks`, `Up to 600 ₸`, `⭐ Saved`) с сохранением выбранного фильтра, поискового запроса и корзины избранных снеков в `localStorage`.
+
+### 6. Animated Button & UI Effects
+- Плавные CSS/JS-анимации при наведении на кнопки и карточки (подъём `translateY`, неоновое свечение `box-shadow`, вращение иконок `.btn-icon-spin`, плавное раскрытие аккордеона и модального окна).
+
+### 7. External API Integration (Интеграция публичного API)
+- На страницах `index.html` и `zones.html` интегрирован публичный **Steam / CheapShark PC Games API** (`https://www.cheapshark.com/api/1.0/deals`).
+- Реализовано через `async/await` и `fetch()`:
+  - Отображение состояния загрузки (**Loading spinner**).
+  - Обработка ошибок сети (**Error state** с кнопкой повторного запроса `Try Again` и резервным каталогом клуба `Load Club Backup List`).
+  - Живой поиск по названию игры в Steam, фильтрация по рейтингу и цене, а также сохранение любимых игр в `localStorage` с отображением в профиле.
