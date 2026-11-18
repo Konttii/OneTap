@@ -741,10 +741,17 @@ footer .wrap {
 
 .navbar-custom .nav-link {
   color: var(--text) !important;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 .navbar-custom .nav-link:hover,
 .navbar-custom .nav-link.active {
   color: var(--accent) !important;
+}
+.navbar-custom .nav-link.active:not(.nav-profile-pill),
+.pure-nav-list a.active:not(.nav-profile-pill) {
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
 }
 
 /* ==========================================================================
@@ -1360,6 +1367,7 @@ body.popup-open {
 
 /* ---------- Assignment 5: Day / Night theme ---------- */
 body {
+  color-scheme: dark;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
@@ -1372,21 +1380,33 @@ body.day-theme {
   --text-muted: #4a4f62;
   --bs-body-color: #14161e;
   --bs-heading-color: #14161e;
+  color-scheme: only light !important;
   background-color: var(--bg) !important;
-  color: var(--text);
+  color: var(--text) !important;
 }
 
 html:has(body.day-theme) {
+  color-scheme: only light !important;
   background-color: #f4f5f9 !important;
 }
 
 body.day-theme #main-header,
 body.day-theme .navbar-custom {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.96);
+  border-bottom-color: var(--border);
 }
 
 body.day-theme .bg-dark {
   background-color: var(--bg-panel) !important;
+}
+
+body.day-theme .carousel-control-prev-icon.bg-dark,
+body.day-theme .carousel-control-next-icon.bg-dark {
+  background-color: #14161e !important;
+}
+
+body.day-theme .border-secondary {
+  border-color: var(--border) !important;
 }
 
 body.day-theme .text-white,
@@ -1402,6 +1422,11 @@ body.day-theme .pure-nav-list a.active {
   font-weight: 700;
 }
 
+body.day-theme .navbar-nav .nav-link.active:not(.nav-profile-pill),
+body.day-theme .pure-nav-list a.active:not(.nav-profile-pill) {
+  border-bottom-color: var(--accent);
+}
+
 body.day-theme .navbar-nav .nav-profile-pill:hover,
 body.day-theme .navbar-nav .nav-profile-pill.active,
 body.day-theme .pure-nav-list .nav-profile-pill:hover,
@@ -1409,6 +1434,27 @@ body.day-theme .pure-nav-list .nav-profile-pill.active {
   background-color: var(--accent) !important;
   color: #ffffff !important;
   border-color: var(--accent) !important;
+}
+
+body.day-theme .profile-info-item,
+body.day-theme .booking-item-card {
+  background-color: #f8f9fc;
+  border-color: var(--border);
+}
+
+body.day-theme .auth-tabs {
+  background-color: #e9ecf3;
+}
+
+body.day-theme .btn-outline-secondary {
+  color: #363b4d;
+  border-color: #b7bdce;
+}
+
+body.day-theme .btn-outline-secondary:hover {
+  background-color: #363b4d;
+  border-color: #363b4d;
+  color: #ffffff;
 }
 
 .fab-daynight {

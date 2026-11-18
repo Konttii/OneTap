@@ -42,6 +42,18 @@
   const MENU_SEARCH_KEY = 'onetap-menu-search';
   const SAVED_GAMES_KEY = 'onetap-saved-games';
 
+  // Apply saved Light/Dark theme synchronously before DOMContentLoaded to avoid flash
+  try {
+    const earlyTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (earlyTheme === 'day' || earlyTheme === 'light') {
+      document.documentElement.style.colorScheme = 'only light';
+      if (document.body) {
+        document.body.classList.add('day-theme');
+        document.body.style.colorScheme = 'only light';
+      }
+    }
+  } catch (error) { /* ignore */ }
+
   function readJsonStorage(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -295,6 +307,20 @@
     const isDay = theme === 'day' || theme === 'light';
     const normalized = isDay ? 'day' : 'night';
     document.body.classList.toggle('day-theme', isDay);
+
+    // Explicitly signal color-scheme so Chromium Force Dark Mode never darkens Light Mode
+    const schemeValue = isDay ? 'only light' : 'dark';
+    document.documentElement.style.colorScheme = schemeValue;
+    document.body.style.colorScheme = schemeValue;
+    if (document.head) {
+      let meta = document.querySelector('meta[name="color-scheme"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'color-scheme';
+        document.head.appendChild(meta);
+      }
+      meta.content = schemeValue;
+    }
 
     if (isDay) {
       document.body.style.backgroundColor = '';

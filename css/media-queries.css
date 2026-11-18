@@ -75,6 +75,11 @@ body.day-theme .pure-navbar {
   color: var(--accent);
 }
 
+.pure-nav-list a.active:not(.nav-profile-pill) {
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
+}
+
 /* --- Main Content --- */
 .page-wrapper {
   flex: 1;
