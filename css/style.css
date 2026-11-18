@@ -1394,6 +1394,23 @@ body.day-theme .navbar-nav .nav-link {
   color: var(--text) !important;
 }
 
+body.day-theme .navbar-nav .nav-link:hover,
+body.day-theme .navbar-nav .nav-link.active,
+body.day-theme .pure-nav-list a:hover,
+body.day-theme .pure-nav-list a.active {
+  color: var(--accent) !important;
+  font-weight: 700;
+}
+
+body.day-theme .navbar-nav .nav-profile-pill:hover,
+body.day-theme .navbar-nav .nav-profile-pill.active,
+body.day-theme .pure-nav-list .nav-profile-pill:hover,
+body.day-theme .pure-nav-list .nav-profile-pill.active {
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+  border-color: var(--accent) !important;
+}
+
 .fab-daynight {
   width: 48px;
   padding: 0;
